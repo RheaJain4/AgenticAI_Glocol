@@ -1,0 +1,14 @@
+{
+  "event_id": "string",
+  "risk_level": "LOW | MEDIUM | HIGH | CRITICAL",
+  "risk_score": "number",
+  "estimated_people_at_risk": "number",
+  "priority_area": "string",
+  "risk_factors": [
+    "high_magnitude",
+    "high_occupancy",
+    "high_population_density"
+  ],
+  "recommended_action": "string",
+  "assessment_summary": "string"
+}
