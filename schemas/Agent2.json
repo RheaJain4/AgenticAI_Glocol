@@ -1,0 +1,15 @@
+{
+  "event_id": "string",
+  "affected_radius_km": "number",
+  "schools": "number",
+  "school_locations": [],
+  "hospitals": "number",
+  "hospital_locations": [],
+  "transit_stations": "number",
+  "transit_station_locations": [],
+  "major_public_places": [],
+  "estimated_resident_population": "number",
+  "population_density_category": "LOW | MEDIUM | HIGH",
+  "critical_infrastructure": [],
+  "research_summary": "string"
+}
