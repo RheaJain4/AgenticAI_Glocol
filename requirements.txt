@@ -10,4 +10,4 @@ pytest==9.1.1             # Test runner for all agents
 
 #Agent 6: Report Generation Agent
 python-dotenv
-google-generativeai 
+google-genai 
