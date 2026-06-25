@@ -1,0 +1,11 @@
+{
+  "technical_report": {
+    "title": "string",
+    "content": "string"
+  },
+
+  "news_report": {
+    "headline": "string",
+    "content": "string"
+  }
+}

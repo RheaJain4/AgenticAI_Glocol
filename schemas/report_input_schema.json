@@ -1,0 +1,46 @@
+{
+  "event": {
+    "event_id": "string",
+    "event_type": "string",
+    "magnitude": "number | null",
+    "intensity": "number | null",
+    "latitude": "number",
+    "longitude": "number",
+    "location": "string",
+    "severity": "LOW | MEDIUM | HIGH | CRITICAL"
+  },
+
+  "research": {
+    "affected_radius_km": "number",
+    "schools": "integer",
+    "hospitals": "integer",
+    "transit_stations": "integer",
+    "infrastructure_count": "integer",
+    "estimated_resident_population": "integer",
+    "population_density_category": "LOW | MEDIUM | HIGH"
+  },
+
+  "occupancy": {
+    "estimated_occupancy": "integer",
+    "high_density_zones": [
+      "string"
+    ],
+    "confidence": "LOW | MEDIUM | HIGH"
+  },
+
+  "risk": {
+    "risk_level": "LOW | MEDIUM | HIGH | CRITICAL",
+    "priority_area": "string",
+    "estimated_people_at_risk": "integer",
+    "risk_score": "number (0-100)"
+  },
+
+  "surge": {
+    "predicted_hotspots": [
+      "string"
+    ],
+    "time_window_minutes": "integer",
+    "prediction_model": "string",
+    "confidence": "LOW | MEDIUM | HIGH"
+  }
+}

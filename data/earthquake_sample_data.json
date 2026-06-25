@@ -1,0 +1,48 @@
+{
+  "event": {
+    "event_id": "EQ001",
+    "event_type": "Earthquake",
+    "magnitude": 6.2,
+    "intensity": null,
+    "latitude": 34.12,
+    "longitude": -118.45,
+    "location": "California",
+    "severity": "HIGH"
+  },
+
+  "research": {
+    "affected_radius_km": 15,
+    "schools": 2,
+    "hospitals": 2,
+    "transit_stations": 2,
+    "infrastructure_count": 17,
+    "estimated_resident_population": 75000,
+    "population_density_category": "MEDIUM"
+  },
+
+  "occupancy": {
+    "estimated_occupancy": 3200,
+    "high_density_zones": [
+      "Station A",
+      "Mall B"
+    ],
+    "confidence": "HIGH"
+  },
+
+  "risk": {
+    "risk_level": "CRITICAL",
+    "priority_area": "Station A",
+    "estimated_people_at_risk": 1200,
+    "risk_score": 92
+  },
+
+  "surge": {
+    "predicted_hotspots": [
+      "Exit A",
+      "Platform B"
+    ],
+    "time_window_minutes": 15,
+    "prediction_model": "XGBoost",
+    "confidence": "HIGH"
+  }
+}
