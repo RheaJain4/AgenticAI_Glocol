@@ -1,0 +1,5 @@
+{
+  "event_id": "string",
+  "estimated_population": "number (total people counted in affected radius)",
+  "high_density_zones": ["string (zone label — 'LocationID (PlaceID)' or 'GroupID (PlaceID)')"]
+}
