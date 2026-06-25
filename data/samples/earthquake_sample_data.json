@@ -21,12 +21,12 @@
   },
 
   "occupancy": {
-    "estimated_occupancy": 3200,
+    "event_id": "EQ001",
+    "estimated_population": 3200,
     "high_density_zones": [
       "Station A",
       "Mall B"
-    ],
-    "confidence": "HIGH"
+    ]
   },
 
   "risk": {

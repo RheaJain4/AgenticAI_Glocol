@@ -21,11 +21,11 @@
   },
 
   "occupancy": {
-    "estimated_occupancy": "integer",
+    "event_id": "string",
+    "estimated_population": "integer",
     "high_density_zones": [
       "string"
-    ],
-    "confidence": "LOW | MEDIUM | HIGH"
+    ]
   },
 
   "risk": {
