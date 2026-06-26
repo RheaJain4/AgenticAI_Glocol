@@ -14,6 +14,7 @@ class ReportAgent:
         self.technical_report = ""
         self.news_report = ""
         self.executive_summary = ""
+        self.report_directory = Path("reports") #path to the directory where reports will be saved
 
 #--------------------------------------------------------------------------------
 
@@ -363,6 +364,23 @@ Prediction Confidence:
     
 
 #--------------------------------------------------------------------------------
+
+    def save_reports(self):
+
+        event_folder = self.report_directory / self.situation["event_id"]
+
+        event_folder.mkdir(parents=True, exist_ok=True)
+
+        with open(event_folder / "executive_summary.txt", "w", encoding="utf-8") as file:
+            file.write(self.executive_summary)
+
+        with open(event_folder / "technical_report.txt", "w", encoding="utf-8") as file:
+            file.write(self.technical_report)
+
+        with open(event_folder / "news_report.txt", "w", encoding="utf-8") as file:
+            file.write(self.news_report)
+
+        print("\nReports saved successfully.")
 #--------------------------------------------------------------------------------
     
 
@@ -375,7 +393,14 @@ def main():
             #agent.build_context()
             
             news = agent.generate_news_report()
+            exec_summary = agent.generate_executive_summary()
+            technical_report = agent.generate_technical_report()
+            print(exec_summary)
+            print(technical_report)
+            print()
+            print("News Report:")
             print(news)
+            agent.save_reports()
 
 #only run the main function if this script is executed directly, not imported as a module
 if __name__ == "__main__": 
