@@ -1,184 +1,230 @@
-"""
-Agent 2: Research / Exposure Enrichment Agent
+import json
+import math
+from typing import Dict, Any, List, Optional
 
-This agent receives an emergency event from Agent 1 and enriches it with
-nearby schools, hospitals, transit stations, public places, population exposure,
-and infrastructure risk.
-
-Currently uses mock data so the pipeline can run without paid APIs.
-Later, this can be connected to OpenStreetMap, Google Places, FEMA, Census, etc.
-"""
-
-from typing import Dict, List, Any
+import requests
 
 
-class ResearchAgent:
+class Agent2Research:
     def __init__(self):
-        pass
+        self.overpass_url = "https://overpass-api.de/api/interpreter"
+        self.user_agent = "PeopleSenseDisasterAgent/2.0"
 
-    def calculate_affected_radius(self, magnitude: float) -> int:
+    def calculate_affected_radius(self, magnitude: float) -> float:
         if magnitude < 5.0:
-            return 5
+            return 5.0
         elif magnitude < 6.0:
-            return 10
+            return 10.0
         elif magnitude < 7.0:
-            return 15
-        else:
-            return 25
+            return 15.0
+        return 25.0
 
-    def get_nearby_schools(self, latitude: float, longitude: float, radius_km: int) -> List[Dict[str, Any]]:
-        return [
-            {
-                "name": "Central High School",
-                "distance_km": 2.1,
-                "latitude": latitude + 0.01,
-                "longitude": longitude + 0.01
-            },
-            {
-                "name": "North Valley Public School",
-                "distance_km": 4.3,
-                "latitude": latitude - 0.02,
-                "longitude": longitude + 0.02
+    def query_overpass(self, lat: float, lon: float, radius_km: float) -> Dict[str, Any]:
+        radius_m = int(radius_km * 1000)
+
+        query = f"""
+        [out:json][timeout:25];
+        (
+          node["amenity"="school"](around:{radius_m},{lat},{lon});
+          way["amenity"="school"](around:{radius_m},{lat},{lon});
+
+          node["amenity"="hospital"](around:{radius_m},{lat},{lon});
+          way["amenity"="hospital"](around:{radius_m},{lat},{lon});
+
+          node["railway"="station"](around:{radius_m},{lat},{lon});
+          way["railway"="station"](around:{radius_m},{lat},{lon});
+
+          node["public_transport"="station"](around:{radius_m},{lat},{lon});
+          way["public_transport"="station"](around:{radius_m},{lat},{lon});
+        );
+        out center tags;
+        """
+
+        try:
+            response = requests.post(
+                self.overpass_url,
+                data={"data": query},
+                headers={"User-Agent": self.user_agent},
+                timeout=30
+            )
+            response.raise_for_status()
+            return response.json()
+
+        except Exception as error:
+            print(f"[Agent 2 Error] Overpass API query failed: {error}")
+            return {"elements": []}
+
+    def extract_location(self, element: Dict[str, Any]) -> Optional[Dict[str, float]]:
+        if "lat" in element and "lon" in element:
+            return {
+                "latitude": element["lat"],
+                "longitude": element["lon"]
             }
-        ]
 
-    def get_nearby_hospitals(self, latitude: float, longitude: float, radius_km: int) -> List[Dict[str, Any]]:
-        return [
-            {
-                "name": "Metro General Hospital",
-                "distance_km": 3.4,
-                "latitude": latitude + 0.015,
-                "longitude": longitude - 0.015
-            },
-            {
-                "name": "City Trauma Center",
-                "distance_km": 6.8,
-                "latitude": latitude - 0.025,
-                "longitude": longitude - 0.02
+        if "center" in element:
+            return {
+                "latitude": element["center"].get("lat"),
+                "longitude": element["center"].get("lon")
             }
-        ]
 
-    def get_transit_stations(self, latitude: float, longitude: float, radius_km: int) -> List[Dict[str, Any]]:
-        return [
-            {
-                "name": "Station A",
-                "type": "Metro Station",
-                "distance_km": 1.8
-            },
-            {
-                "name": "Central Bus Terminal",
-                "type": "Bus Station",
-                "distance_km": 5.2
-            }
-        ]
+        return None
 
-    def get_public_places(self, latitude: float, longitude: float, radius_km: int) -> List[Dict[str, Any]]:
-        return [
-            {
-                "name": "Mall B",
-                "type": "Shopping Mall",
-                "distance_km": 2.5
-            },
-            {
-                "name": "City Market",
-                "type": "Market Area",
-                "distance_km": 3.9
-            }
-        ]
-
-    def estimate_population_exposure(self, magnitude: float, radius_km: int) -> Dict[str, Any]:
-        estimated_population = radius_km * 5000
-
-        if estimated_population > 80000:
-            density_category = "HIGH"
-        elif estimated_population > 30000:
-            density_category = "MEDIUM"
-        else:
-            density_category = "LOW"
+    def format_place(self, element: Dict[str, Any]) -> Dict[str, Any]:
+        tags = element.get("tags", {})
+        location = self.extract_location(element)
 
         return {
-            "estimated_resident_population": estimated_population,
+            "id": str(element.get("id", "unknown")),
+            "name": tags.get("name", "Unnamed"),
+            "latitude": location["latitude"] if location else None,
+            "longitude": location["longitude"] if location else None
+        }
+
+    def categorize_places(self, elements: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+        schools = []
+        hospitals = []
+        transit_stations = []
+        seen_ids = set()
+
+        for element in elements:
+            element_id = element.get("id")
+
+            if element_id in seen_ids:
+                continue
+
+            seen_ids.add(element_id)
+
+            tags = element.get("tags", {})
+            amenity = tags.get("amenity")
+            railway = tags.get("railway")
+            public_transport = tags.get("public_transport")
+
+            place = self.format_place(element)
+
+            if amenity == "school":
+                schools.append(place)
+
+            elif amenity == "hospital":
+                hospitals.append(place)
+
+            elif railway == "station" or public_transport == "station":
+                transit_stations.append(place)
+
+        return {
+            "schools": schools,
+            "hospitals": hospitals,
+            "transit_stations": transit_stations
+        }
+
+    def estimate_population(
+        self,
+        schools_count: int,
+        hospitals_count: int,
+        stations_count: int,
+        radius_km: float
+    ) -> Dict[str, Any]:
+
+        area_sq_km = math.pi * (radius_km ** 2)
+
+        estimated_population = (
+            schools_count * 5000
+            + hospitals_count * 15000
+            + stations_count * 8000
+        )
+
+        if estimated_population == 0:
+            estimated_population = int(area_sq_km * 300)
+
+        density_per_sq_km = estimated_population / area_sq_km
+
+        if density_per_sq_km < 200:
+            density_category = "LOW"
+        elif density_per_sq_km < 1500:
+            density_category = "MEDIUM"
+        else:
+            density_category = "HIGH"
+
+        return {
+            "estimated_resident_population": int(estimated_population),
+            "population_density_per_sq_km": round(density_per_sq_km, 2),
             "population_density_category": density_category
         }
 
-    def get_critical_infrastructure(self, latitude: float, longitude: float, radius_km: int) -> List[Dict[str, Any]]:
-        return [
-            {
-                "name": "Highway Interchange",
-                "type": "Transport Infrastructure",
-                "distance_km": 4.7
-            },
-            {
-                "name": "Power Substation",
-                "type": "Energy Infrastructure",
-                "distance_km": 5.5
-            },
-            {
-                "name": "Bridge near Station A",
-                "type": "Bridge",
-                "distance_km": 2.2
-            }
-        ]
+    def process(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        event = payload.get("event", {})
 
-    def run(self, event: Dict[str, Any]) -> Dict[str, Any]:
-        event_id = event.get("event_id")
+        event_id = event.get("event_id", "UNKNOWN")
         magnitude = event.get("magnitude")
         latitude = event.get("latitude")
         longitude = event.get("longitude")
 
-        if magnitude is None or latitude is None or longitude is None:
-            raise ValueError("Event must contain magnitude, latitude, and longitude.")
+        if magnitude is None:
+            raise ValueError("Missing required field: magnitude")
+
+        if latitude is None or longitude is None:
+            raise ValueError("Missing required fields: latitude and longitude")
 
         affected_radius_km = self.calculate_affected_radius(magnitude)
 
-        schools = self.get_nearby_schools(latitude, longitude, affected_radius_km)
-        hospitals = self.get_nearby_hospitals(latitude, longitude, affected_radius_km)
-        transit_stations = self.get_transit_stations(latitude, longitude, affected_radius_km)
-        public_places = self.get_public_places(latitude, longitude, affected_radius_km)
-        population = self.estimate_population_exposure(magnitude, affected_radius_km)
-        infrastructure = self.get_critical_infrastructure(latitude, longitude, affected_radius_km)
+        osm_data = self.query_overpass(
+            latitude,
+            longitude,
+            affected_radius_km
+        )
 
-        output = {
-            "event_id": event_id,
+        elements = osm_data.get("elements", [])
+        categorized = self.categorize_places(elements)
+
+        schools = categorized["schools"]
+        hospitals = categorized["hospitals"]
+        transit_stations = categorized["transit_stations"]
+
+        population = self.estimate_population(
+            schools_count=len(schools),
+            hospitals_count=len(hospitals),
+            stations_count=len(transit_stations),
+            radius_km=affected_radius_km
+        )
+
+        research = {
             "affected_radius_km": affected_radius_km,
-
             "schools": len(schools),
-            "school_locations": schools,
-
             "hospitals": len(hospitals),
-            "hospital_locations": hospitals,
-
             "transit_stations": len(transit_stations),
-            "transit_station_locations": transit_stations,
-
-            "major_public_places": public_places,
-
+            "infrastructure_count": len(schools) + len(hospitals) + len(transit_stations),
             "estimated_resident_population": population["estimated_resident_population"],
-            "population_density_category": population["population_density_category"],
-
-            "critical_infrastructure": infrastructure,
-
-            "research_summary": (
-                "The affected zone contains schools, hospitals, transit stations, "
-                "public gathering areas, and critical infrastructure. These locations "
-                "should be passed to the Occupancy Agent for live crowd estimation."
-            )
+            "population_density_per_sq_km": population["population_density_per_sq_km"],
+            "population_density_category": population["population_density_category"]
         }
 
-        return output
+        return {
+            "event": event,
+            "research": research,
+            "meta": {
+                "agent": "Agent 2 - Research Agent",
+                "data_source": "OpenStreetMap Overpass API",
+                "event_id": event_id,
+                "schools": schools,
+                "hospitals": hospitals,
+                "transit_stations": transit_stations
+            }
+        }
 
 
 if __name__ == "__main__":
-    sample_event = {
-        "event_id": "EQ001",
-        "event_type": "earthquake",
-        "magnitude": 6.2,
-        "latitude": 34.12,
-        "longitude": -118.45,
-        "severity": "HIGH"
+    test_payload = {
+        "event": {
+            "event_id": "EQ001",
+            "event_type": "earthquake",
+            "magnitude": 6.2,
+            "latitude": 34.12,
+            "longitude": -118.45,
+            "location": "California",
+            "severity": "HIGH"
+        }
     }
 
-    agent = ResearchAgent()
-    result = agent.run(sample_event)
+    agent = Agent2Research()
+    output = agent.process(test_payload)
 
-    print(result)
+    print(json.dumps(output, indent=2))
