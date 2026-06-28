@@ -1,6 +1,8 @@
+#run using  python -m agents.Agent6_Report
+
 import json #lets python understand json files
 from pathlib import Path #makes it easier to work with file paths
-
+from utils.llm import generate_text #so agent 6 can talk to gemini
 
 class ReportAgent:
 
@@ -11,7 +13,10 @@ class ReportAgent:
         self.data_path = Path("data/samples/earthquake_sample_data.json") #path to the input data file
         self.technical_report = ""
         self.news_report = ""
+        self.executive_summary = ""
+        self.report_directory = Path("reports") #path to the directory where reports will be saved
 
+#--------------------------------------------------------------------------------
 
     def load_input(self): #method 1 to just read json
         print("\nLoading input data...")
@@ -30,7 +35,9 @@ class ReportAgent:
             return False
         
         return True
-    
+
+
+#--------------------------------------------------------------------------------
     
     def validate_input(self): #method 2 to validate the input data
         print("\nValidating input data...")
@@ -46,6 +53,9 @@ class ReportAgent:
         print("Input validation successful!")
 
         return True
+    
+
+#--------------------------------------------------------------------------------
     
     def normalize_input(self): #method 3 to normalize the input data
         print("\nNormalizing input data...")
@@ -115,6 +125,19 @@ class ReportAgent:
 
         print("Input normalized successfully!")
 
+
+#--------------------------------------------------------------------------------
+
+    def generate_technical_analysis(self):
+        print("\nGenerating technical analysis...")
+        prompt_file = Path("prompts/technical_prompt.txt")
+        prompt = self.build_prompt(prompt_file)
+        analysis = generate_text(prompt)
+        return analysis
+    
+
+#--------------------------------------------------------------------------------
+
     def build_executive_summary(self):
         summary = f"""
 EXECUTIVE SUMMARY 
@@ -124,14 +147,38 @@ A {self.situation["severity"]} severity {self.situation["event_type"]} has been 
         return summary.strip()  # Remove leading/trailing whitespace
     
 
+#--------------------------------------------------------------------------------
+    
+    def generate_executive_summary(self):
+        print("\nGenerating executive summary...")
+        prompt_file = Path("prompts/executive_summary.txt")
+        prompt = self.build_prompt(prompt_file)
+        response = generate_text(prompt)
+        self.executive_summary = response.strip()  # Remove leading/trailing whitespace
+        print("\nExecutive summary generated successfully!")
+        return self.executive_summary
+    
+
+#-------------------------------------------------------------------------------- 
+    
+    def generate_news_report(self):
+        print("\nGenerating news report...")
+        prompt_file = Path("prompts/news_report_prompt.txt")
+        prompt = self.build_prompt(prompt_file)
+        response = generate_text(prompt)
+        self.news_report = response.strip()  # Remove leading/trailing whitespace
+        print("\nNews report generated successfully!")
+        return self.news_report
+    
+
+#--------------------------------------------------------------------------------    
+
     def generate_technical_report(self):
         print("\nGenerating technical report...")
-        executive_summary = self.build_executive_summary()
 
         report = f"""
                 EMERGENCY SITUATION TECHNICAL REPORT
                 
-{executive_summary}
 --------------------------------------------------------
 
 EVENT INFORMATION
@@ -173,11 +220,169 @@ Predicted Hotspots:{", ".join(self.situation["predicted_hotspots"])}
 Prediction Confidence: {self.situation["prediction_confidence"]}
 """
         
-        self.technical_report = report
-        print("\n Report successfully generated")
+        analysis = self.generate_technical_analysis()
+
+        report += f"""
+
+--------------------------------------------------------
+
+ANALYST OBSERVATIONS
+
+{analysis}
+
+"""
         
+        self.technical_report = report
+        print("\n Report successfully generated")   
+        return self.technical_report.strip()  # Remove leading/trailing whitespace   
 
 
+#--------------------------------------------------------------------------------  
+
+    def build_context(self):
+
+        context = f"""
+==================================================
+EMERGENCY EVENT INFORMATION
+==================================================
+
+EVENT
+
+Event ID:
+{self.situation["event_id"]}
+
+Event Type:
+{self.situation["event_type"]}
+
+Location:
+{self.situation["location"]}
+
+Coordinates:
+{self.situation["coordinates"]}
+
+Hazard Metric:
+{self.situation["hazard_metric"]}
+
+Severity:
+{self.situation["severity"]}
+
+
+==================================================
+AREA INFORMATION
+==================================================
+
+Affected Radius:
+{self.situation["affected_radius"]} km
+
+Estimated Resident Population:
+{self.situation["estimated_population"]}
+
+Population Density:
+{self.situation["population_density"]}
+
+
+==================================================
+INFRASTRUCTURE
+==================================================
+
+Schools:
+{self.situation["schools"]}
+
+Hospitals:
+{self.situation["hospitals"]}
+
+Transit Stations:
+{self.situation["transit_stations"]}
+
+Infrastructure Count:
+{self.situation["infrastructure_count"]}
+
+
+==================================================
+OCCUPANCY
+==================================================
+
+Estimated Occupancy:
+{self.situation["estimated_occupancy"]}
+
+High Density Zones:
+{", ".join(self.situation["high_density_zones"])}
+
+
+
+==================================================
+RISK
+==================================================
+
+Risk Level:
+{self.situation["risk_level"]}
+
+Risk Score:
+{self.situation["risk_score"]}
+
+Priority Area:
+{self.situation["priority_area"]}
+
+Estimated People At Risk:
+{self.situation["people_at_risk"]}
+
+
+==================================================
+CROWD SURGE PREDICTION
+==================================================
+
+Predicted Hotspots:
+{", ".join(self.situation["predicted_hotspots"])}
+
+Prediction Window:
+{self.situation["prediction_window"]} minutes
+
+Prediction Model:
+{self.situation["prediction_model"]}
+
+Prediction Confidence:
+{self.situation["prediction_confidence"]}
+"""
+        return context
+
+
+#--------------------------------------------------------------------------------
+
+    def build_prompt(self, prompt_file):
+
+        # Read the prompt template
+        with open(prompt_file, "r", encoding="utf-8") as file:
+            template = file.read()
+
+        # Build the factual context
+        context = self.build_context()
+
+        # Combine them
+        prompt = template + "\n\n" + context
+
+        return prompt
+    
+
+#--------------------------------------------------------------------------------
+
+    def save_reports(self):
+
+        event_folder = self.report_directory / self.situation["event_id"]
+
+        event_folder.mkdir(parents=True, exist_ok=True)
+
+        with open(event_folder / "executive_summary.txt", "w", encoding="utf-8") as file:
+            file.write(self.executive_summary)
+
+        with open(event_folder / "technical_report.txt", "w", encoding="utf-8") as file:
+            file.write(self.technical_report)
+
+        with open(event_folder / "news_report.txt", "w", encoding="utf-8") as file:
+            file.write(self.news_report)
+
+        print("\nReports saved successfully.")
+#--------------------------------------------------------------------------------
+    
 
 def main():
     agent = ReportAgent()
@@ -185,10 +390,17 @@ def main():
         if agent.validate_input():
             agent.normalize_input()
             print()
-            agent.generate_technical_report()
-            print(agent.technical_report)
-
-
+            #agent.build_context()
+            
+            news = agent.generate_news_report()
+            exec_summary = agent.generate_executive_summary()
+            technical_report = agent.generate_technical_report()
+            print(exec_summary)
+            print(technical_report)
+            print()
+            print("News Report:")
+            print(news)
+            agent.save_reports()
 
 #only run the main function if this script is executed directly, not imported as a module
 if __name__ == "__main__": 

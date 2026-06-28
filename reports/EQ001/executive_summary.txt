@@ -1,0 +1,7 @@
+**Executive Summary: Operational Situation Report (SitRep) - EQ001**
+
+An urgent situation report details a Magnitude 6.2 earthquake (EQ001) in California, classified as HIGH severity. The event has created a CRITICAL risk level across an estimated 75,000 residents within a 15 km radius, demanding immediate operational response.
+
+Operationally, the primary concern is the significant direct impact on critical infrastructure, including two hospitals and two major transit stations. These facilities are within the affected zone, alongside an estimated 3,200 people in occupied high-density zones like Station A and Mall B, with approximately 1,200 individuals assessed to be at immediate risk. This poses considerable challenges for emergency access, medical response, and potential mass care.
+
+Furthermore, a high-confidence crowd surge is predicted within the next 15 minutes at Station A, specifically at Exit A and Platform B. This necessitates rapid deployment of resources for public safety, crowd control, and managing potential congestion, particularly given the proximity to transit operations. Urgent coordination is essential to mitigate immediate threats and manage evolving public safety needs.
