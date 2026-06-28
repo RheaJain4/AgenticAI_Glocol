@@ -1,0 +1,11 @@
+{
+  "surge": {
+    "predicted_hotspots": [
+      "string"
+    ],
+    "time_window_minutes": "integer",
+    "prediction_model": "string",
+    "confidence": "LOW | MEDIUM | HIGH",
+    "congestion_probability": "number (0.0-1.0)"
+  }
+}
