@@ -6,35 +6,14 @@ from utils.llm import generate_text #so agent 6 can talk to gemini
 
 class ReportAgent:
 
-    def __init__(self): #python constructor method, initializes the class
+    def __init__(self, state): #python constructor method, initializes the class
         print("Report Agent Initialized")
-        self.input_data = {} #create an empty dictionary to hold the input data (memory for agent)
+        self.input_data = state #create an empty dictionary to hold the input data (memory for agent)
         self.situation = {} #what the agent understands
-        self.data_path = Path("data/samples/earthquake_sample_data.json") #path to the input data file
         self.technical_report = ""
         self.news_report = ""
         self.executive_summary = ""
         self.report_directory = Path("reports") #path to the directory where reports will be saved
-
-#--------------------------------------------------------------------------------
-
-    def load_input(self): #method 1 to just read json
-        print("\nLoading input data...")
-
-        try:
-            with open(self.data_path, "r") as file: #if you open file with "with" instead 
-            #of just writing file = whatever then python will automatically close the file when done
-                self.input_data = json.load(file) #load the json data into a python dictionary 
-
-        except FileNotFoundError:
-            print("Error: Input data not found")
-            return False
-        
-        except json.JSONDecodeError:
-            print("Error: Invalid JSON format")
-            return False
-        
-        return True
 
 
 #--------------------------------------------------------------------------------
@@ -383,25 +362,3 @@ Prediction Confidence:
         print("\nReports saved successfully.")
 #--------------------------------------------------------------------------------
     
-
-def main():
-    agent = ReportAgent()
-    if agent.load_input():
-        if agent.validate_input():
-            agent.normalize_input()
-            print()
-            #agent.build_context()
-            
-            news = agent.generate_news_report()
-            exec_summary = agent.generate_executive_summary()
-            technical_report = agent.generate_technical_report()
-            print(exec_summary)
-            print(technical_report)
-            print()
-            print("News Report:")
-            print(news)
-            agent.save_reports()
-
-#only run the main function if this script is executed directly, not imported as a module
-if __name__ == "__main__": 
-    main()
