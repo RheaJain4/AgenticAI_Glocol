@@ -1,4 +1,6 @@
 import json
+from urllib import response
+import requests
 from typing import Dict, Any
 
 """
@@ -12,6 +14,9 @@ schema used by downstream agents.
 class Agent1Ingestion:
     def __init__(self):
         self.agent_name = "Agent 1 - Emergency Alert Ingestion"
+        self.usgs_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
+        self.cap_url = "https://api.weather.gov/alerts/active"
+        self.fema_url = ""
 
     def validate_payload(self, payload: Dict[str, Any]) -> None:
         required_fields = [
@@ -86,7 +91,20 @@ class Agent1Ingestion:
 
         return event
 
-    def process(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def process(self, payload: Dict[str, Any]=None,source:str=None) -> Dict[str, Any]:
+        if payload is None:
+
+            if source == "USGS":
+                payload = self.fetch_usgs()
+
+            elif source == "CAP":
+                payload = self.fetch_cap()
+
+            elif source == "FEMA":
+                payload = self.fetch_fema()
+
+            else:
+                raise ValueError("Provide either payload or source.")
 
         self.validate_payload(payload)
 
@@ -99,6 +117,68 @@ class Agent1Ingestion:
                 "source": payload.get("source", "Unknown")
             }
         }
+    def fetch_usgs(self) -> Dict[str, Any]:
+
+        response = requests.get(self.usgs_url, timeout=30)
+        response.raise_for_status()
+
+        data = response.json()
+
+        feature = data["features"][0]
+
+        return {
+            "source": "USGS",
+            "event_id": feature["id"],
+            "event_type": "earthquake",
+            "magnitude": feature["properties"]["mag"],
+            "latitude": feature["geometry"]["coordinates"][1],
+            "longitude": feature["geometry"]["coordinates"][0],
+            "location": feature["properties"]["place"]
+        }
+    def fetch_cap(self) -> Dict[str, Any]:
+
+        headers = {
+            "User-Agent": "PeopleSenseDisasterAgent/1.0"
+        }
+
+        response = requests.get(
+            self.cap_url,
+            headers=headers,
+            timeout=30
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if not data["features"]:
+            raise ValueError("No active CAP alerts found.")
+
+        alert = data["features"][0]["properties"]
+
+        geometry = data["features"][0].get("geometry")
+
+        latitude = None
+        longitude = None
+
+    # Take the first coordinate if geometry exists
+        if geometry and geometry["type"] == "Polygon":
+            longitude, latitude = geometry["coordinates"][0][0]
+
+        return {
+            "source": "CAP",
+            "event_id": alert.get("id", "UNKNOWN"),
+            "event_type": alert.get("event", "Unknown"),
+            "severity": alert.get("severity", "Moderate"),
+            "latitude": latitude,
+            "longitude": longitude,
+            "location": alert.get("areaDesc", "Unknown")
+        }
+    def fetch_fema(self):
+
+        raise NotImplementedError(
+            "FEMA API endpoint not configured."
+        )
 
 
 if __name__ == "__main__":
@@ -141,6 +221,6 @@ if __name__ == "__main__":
 
     agent = Agent1Ingestion()
 
-    output = agent.process(fema_alert)
+    output = agent.process(source="USGS")
 
     print(json.dumps(output, indent=2))
