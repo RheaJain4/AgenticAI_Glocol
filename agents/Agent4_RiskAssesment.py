@@ -1,4 +1,5 @@
 from typing import Dict, Any
+import math
 
 
 class RiskAssessmentAgent:
@@ -7,7 +8,7 @@ class RiskAssessmentAgent:
 
     Combines:
     - Event severity/magnitude
-    - Population
+    - Population density
     - Occupancy
     - Infrastructure
 
@@ -21,6 +22,8 @@ class RiskAssessmentAgent:
         """
         Converts severity or magnitude into a score out of 100.
         """
+
+        severity = severity.upper()
 
         if severity == "CRITICAL":
             return 100
@@ -41,14 +44,57 @@ class RiskAssessmentAgent:
         else:
             return 40
 
-    def normalize_population(self, population: int) -> float:
-        return min((population / 100000) * 100, 100)
+    def normalize_population(
+        self,
+        population: int,
+        affected_radius_km: float,
+    ) -> float:
+        """
+        Normalize using population density instead of absolute population.
+        """
+
+        if affected_radius_km <= 0:
+            affected_radius_km = 1
+
+        area = math.pi * (affected_radius_km ** 2)
+        density = population / area
+
+        if density >= 1000:
+            return 100
+        elif density >= 500:
+            return 80
+        elif density >= 200:
+            return 60
+        elif density >= 100:
+            return 40
+        else:
+            return 20
 
     def normalize_occupancy(self, occupancy: int) -> float:
-        return min((occupancy / 5000) * 100, 100)
+
+        if occupancy >= 5000:
+            return 100
+        elif occupancy >= 3000:
+            return 80
+        elif occupancy >= 1500:
+            return 60
+        elif occupancy >= 500:
+            return 40
+        else:
+            return 20
 
     def normalize_infrastructure(self, infrastructure: int) -> float:
-        return min((infrastructure / 20) * 100, 100)
+
+        if infrastructure >= 20:
+            return 100
+        elif infrastructure >= 15:
+            return 80
+        elif infrastructure >= 10:
+            return 60
+        elif infrastructure >= 5:
+            return 40
+        else:
+            return 20
 
     def calculate_risk_score(
         self,
@@ -91,7 +137,8 @@ class RiskAssessmentAgent:
         )
 
         population_score = self.normalize_population(
-            research.get("estimated_resident_population", 0)
+            research.get("estimated_resident_population", 0),
+            research.get("affected_radius_km", 1),
         )
 
         occupancy_score = self.normalize_occupancy(
@@ -119,8 +166,22 @@ class RiskAssessmentAgent:
             else "Unknown"
         )
 
+        estimated_population = occupancy.get(
+            "estimated_population",
+            0,
+        )
+
+        if risk_level == "LOW":
+            factor = 0.20
+        elif risk_level == "MEDIUM":
+            factor = 0.40
+        elif risk_level == "HIGH":
+            factor = 0.60
+        else:
+            factor = 0.80
+
         estimated_people_at_risk = int(
-            occupancy.get("estimated_population", 0) * 0.4
+            estimated_population * factor
         )
 
         return {

@@ -38,4 +38,11 @@ Focus only on
 
 • data limitations
 
+Live Occupancy Data Guidelines:
+
+- If sensor_count is 0, state that no PeopleSense sensors are available within the affected area.
+- Do NOT say occupancy is zero.
+- Explain that live occupancy could not be determined.
+- If sensor_count > 0, use the provided occupancy information normally.
+
 Return ONLY the Analyst Observations section.

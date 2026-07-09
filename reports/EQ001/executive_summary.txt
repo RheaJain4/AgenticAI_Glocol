@@ -1,7 +1,9 @@
-**Executive Summary: Operational Situation Report (SitRep) - EQ001**
+**EXECUTIVE SUMMARY: Operational Situation Report – EQ001**
 
-An urgent situation report details a Magnitude 6.2 earthquake (EQ001) in California, classified as HIGH severity. The event has created a CRITICAL risk level across an estimated 75,000 residents within a 15 km radius, demanding immediate operational response.
+An earthquake, Magnitude 6.2, has occurred in Sacramento, triggering a HIGH severity assessment and CRITICAL overall risk level. This event poses significant operational challenges across a densely populated urban area, impacting vital infrastructure and numerous high-occupancy zones, with Sacramento State University (SAC-STATE) identified as a priority area.
 
-Operationally, the primary concern is the significant direct impact on critical infrastructure, including two hospitals and two major transit stations. These facilities are within the affected zone, alongside an estimated 3,200 people in occupied high-density zones like Station A and Mall B, with approximately 1,200 individuals assessed to be at immediate risk. This poses considerable challenges for emergency access, medical response, and potential mass care.
+Key operational concerns include potential structural failures, immediate casualty management, and widespread disruption to essential services. An estimated 2,506 individuals are at critical risk, concentrated within the affected 15km radius.
 
-Furthermore, a high-confidence crowd surge is predicted within the next 15 minutes at Station A, specifically at Exit A and Platform B. This necessitates rapid deployment of resources for public safety, crowd control, and managing potential congestion, particularly given the proximity to transit operations. Urgent coordination is essential to mitigate immediate threats and manage evolving public safety needs.
+Compounding the immediate response, high-confidence crowd surge is predicted within the next 15 minutes. Hotspots include major exits at SAC-STATE facilities (e.g., PS-0324, University Union, AIRC), main campus pedestrian pathways, and nearby train station platforms.
+
+The full extent of structural damage and detailed impact on critical infrastructure remains largely unknown, necessitating rapid, comprehensive damage assessments to inform resource allocation and response priorities.

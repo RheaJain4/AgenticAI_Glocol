@@ -6,9 +6,9 @@
 EVENT INFORMATION
 
 Event ID: EQ001
-Disaster Type: Earthquake
-Location: California
-Coordinates: 34.12, -118.45
+Disaster Type: earthquake
+Location: Sacramento
+Coordinates: 38.5816, -121.4944
 Magnitude 6.2
 Severity: HIGH
 
@@ -16,29 +16,29 @@ Severity: HIGH
 
 AREA ASSESSMENT
 
-Affected Radius: 15 km 
-Estimated Population: 75000
-Population Density: MEDIUM
-Schools: 2 
-Hospitals: 2
-Transit Stations: 2
-Infrastructure Count: 17
+Affected Radius: 15.0 km 
+Estimated Population: 2342000
+Population Density: HIGH
+Schools: 340 
+Hospitals: 14
+Transit Stations: 54
+Infrastructure Count: 408
 
 --------------------------------------------------------
 
 OCCUPANCY ASSESSMENT
 
-Estimated Occupancy: 3200
-High Density Zones: Station A, Mall B 
+Estimated Occupancy: 3133
+High Density Zones: PS-0324 (SAC-STATE), PS-0323 (SAC-STATE), Lassen Hall (SAC-STATE), Academic Information Resource Center (SAC-STATE-VIRTUAL), 8018 (All Trains), Riverview Hall (CSU), SAC-AIRPORT-TERMINAL-B (BVT), DMV SAC FO Broadway - Waiting Area (DMV), DMV SAC FO Broadway - Photo Booth (DMV), Academic Information Resource Center (AIRC) (CSU), University Union (SAC-STATE), Police Department (CSU), Facilities: Custodial Warehouse (CSU), Central Plant (CSU), University Union (CSU), 8304 (All Trains), University Union (SAC-STATE), American River Courtyard (SAC-STATE-VIRTUAL), 6361 (All Trains), Carlsen Center (SAC-STATE), 6362 (All Trains), Santa Clara Hall (Mesa Room) (SAC-STATE), Tschannen Science Complex (CSU), Santa Clara Hall (Mesa Room) (SAC-STATE), Klamath Hall (SAC-STATE-VIRTUAL), Mariposa Hall (CSU), Library (CSU), Carlsen Center (SAC-STATE) 
 
 --------------------------------------------------------
 
 RISK ASSESSMENT 
 Risk Level: CRITICAL
-Risk Score: 92 
-Priority Area: Station A
-Estimated People At Risk: 1200
-Predicted Hotspots:Exit A, Platform B
+Risk Score: 88.0 
+Priority Area: PS-0324 (SAC-STATE)
+Estimated People At Risk: 2506
+Predicted Hotspots:Exits of PS-0324 (SAC-STATE), University Union Main Exits (SAC-STATE), Academic Information Resource Center (AIRC) Exits (SAC-STATE), Main Pedestrian Pathways leading off SAC-STATE Campus, SAC-STATE Campus Perimeter Exits/Gates, Nearby Train Station Platforms/Exits (e.g., University/65th St Station area)
 Prediction Confidence: HIGH
 
 
@@ -49,33 +49,31 @@ ANALYST OBSERVATIONS
 **Analyst Observations**
 
 **Operational Priorities:**
-*   An earthquake of Magnitude 6.2 with HIGH severity and CRITICAL risk (Risk Score 92) has occurred, requiring immediate response.
-*   The primary operational focus is the 15 km affected radius, specifically the Priority Area of Station A and High-Density Zones of Station A and Mall B.
-*   Immediate assessment is required for the status of 2 schools, 2 hospitals, and 2 transit stations within the affected radius.
-*   The estimated 1200 People At Risk necessitates prompt welfare checks and safety assessments in designated areas.
+*   **Immediate Response to Critical Risk Area:** Given the CRITICAL risk level (score 88.0) and Priority Area designation for PS-0324 (SAC-STATE), immediate dispatch of emergency services and coordination with campus authorities is paramount. An estimated 2,506 people are identified at risk in this specific area.
+*   **High Severity Event:** The Magnitude 6.2 earthquake of HIGH severity necessitates a rapid and comprehensive emergency response across the affected radius of 15.0 km.
+*   **High-Density Zone Management:** Prioritize communication and resource deployment to all identified high-density zones, particularly those within the SAC-STATE campus (e.g., University Union, AIRC, Carlsen Center, various halls), the SAC-AIRPORT-TERMINAL-B, and DMV locations, where an estimated 3,133 people are present.
+*   **Infrastructure Status Assessment:** Initiate rapid assessment teams to ascertain the operational status and immediate needs of the 14 hospitals, 340 schools, and 54 transit stations within the affected radius.
 
 **Crowd Management:**
-*   High-Density Zones, Station A and Mall B, with an estimated occupancy of 3200, are areas of immediate concern for public safety and potential crowd dynamics.
-*   A crowd surge is predicted at Exit A and Platform B within a 15-minute window with HIGH confidence, requiring immediate deployment of crowd control and public information resources to these specific hotspots.
-*   Coordination with transit authorities for Station A and management for Mall B is critical to manage potential evacuations or sheltering-in-place.
+*   **Imminent Crowd Surge:** A HIGH confidence prediction of crowd surges within a 15-minute window at key SAC-STATE exits (PS-0324, University Union, AIRC), main pedestrian pathways leading off campus, perimeter exits/gates, and nearby train station platforms/exits (e.g., University/65th St Station area) demands immediate deployment of crowd management personnel.
+*   **Controlled Evacuation Guidance:** Develop and disseminate immediate guidance for controlled movement and potential evacuation from predicted hotspot areas, focusing on preventing congestion and maintaining orderly flow.
+*   **Communication Strategy:** Prepare public information messaging to manage potential panic and provide clear instructions for individuals in the affected high-density zones.
 
 **Resource Allocation:**
-*   Significant emergency response resources should be deployed to the 15 km affected radius, with priority directed to Station A due to its designation as a Priority Area and predicted crowd surge hotspots (Exit A, Platform B).
-*   Personnel for crowd control, public information, and immediate safety assessments are urgently needed at Exit A and Platform B.
-*   Emergency medical and search and rescue teams should be on standby for deployment, initially focusing on High-Density Zones and the vicinity of people identified as At Risk.
-*   Logistical support for potential evacuation or shelter operations should be considered.
+*   **Targeted Deployment:** Allocate a significant proportion of initial emergency response personnel (e.g., law enforcement, medical first responders) to the SAC-STATE campus, specifically around PS-0324 and other identified predicted crowd surge hotspots.
+*   **Traffic Management:** Prepare for potential traffic control needs on main pedestrian pathways and roads leading away from SAC-STATE campus and near train stations to facilitate safe movement and emergency access. Road closures cannot be assumed without further assessment.
+*   **Medical Staging:** Establish medical staging areas at strategic locations, particularly near SAC-STATE and other high-density zones, in anticipation of potential needs. The operational capacity of the 14 hospitals is unknown.
 
 **Monitoring Recommendations:**
-*   Initiate continuous monitoring of real-time conditions, particularly within the Priority Area (Station A) and High-Density Zones (Station A, Mall B).
-*   Prioritize rapid assessment of the 2 schools, 2 hospitals, and 2 transit stations for operational status and safety.
-*   Track the overall status of the 17 identified infrastructure elements within the affected radius.
-*   Monitor public safety communications and social media for emerging situational awareness.
-*   Utilize the HIGH confidence crowd surge prediction model (XGBoost) to inform dynamic resource positioning and public messaging at predicted hotspots.
+*   **Real-time Crowd Monitoring:** Continuously monitor real-time feeds (if available) from predicted hotspots and high-density zones for crowd movement and emerging issues.
+*   **Infrastructure Status:** Establish communication channels with all 408 identified infrastructure sites (schools, hospitals, transit stations) to gather immediate status reports and identify urgent needs.
+*   **Population Behavior:** Monitor public and social media for emerging patterns of public behavior, distress calls, or localized issues from the estimated 2,342,000 residents.
 
 **Data Limitations:**
-*   Specific details regarding damage to infrastructure (including schools, hospitals, and transit stations) are not provided. Further assessment is required.
-*   The operational status of critical services such as utilities (e.g., power, water) and communication networks is not available. Further assessment is required.
-*   The specific nature of the risk for the "Estimated People At Risk" (e.g., trapped, injured, requiring medical aid) is not detailed. Further assessment is required.
-*   Information on road conditions or accessibility for emergency vehicles within the affected radius is not available. Further assessment is required.
-*   No information on current casualty counts or specific medical needs is provided. Further assessment is required.
+*   The data does not provide specific information on the structural integrity or damage status of any infrastructure (schools, hospitals, transit stations, or other buildings). Further assessment is required.
+*   The immediate operational capacity and staffing levels of the 14 hospitals within the affected radius are not provided. Further assessment is required.
+*   There is no information on potential road closures, accessibility issues for emergency vehicles, or public transportation interruptions. Further assessment is required.
+*   The data does not estimate casualties or injuries. Further assessment is required.
+*   The specific types and quantities of emergency resources (e.g., search and rescue teams, specialized medical equipment, shelter capacity) required are not detailed. Further needs assessment is required.
+*   The long-term implications for crowd management beyond the 15-minute prediction window are not detailed; sustained strategies will require further planning.
 

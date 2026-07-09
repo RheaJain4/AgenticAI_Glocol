@@ -1,16 +1,7 @@
-# AgenticAI_Glocol — Python dependencies
-# Install with: pip install -r requirements.txt
-
-# Agent 3: Occupancy Context Agent
-requests==2.34.2          # HTTP calls to PeopleSense API
-python-dotenv==1.2.2      # Load API key from .env
-
-# Testing
-pytest==9.1.1             # Test runner for all agents
-
-#Agent 6: Report Generation Agent
+requests
 python-dotenv
-google-genai 
+google-genai
+pytest
 
 #Agent 2
 fastapi>=0.100.0
