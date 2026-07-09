@@ -10,7 +10,6 @@ class ReportAgent:
     def __init__(self, state): #python constructor method, initializes the class
         print("Report Agent Initialized")
         self.input_data = state #create an empty dictionary to hold the input data (memory for agent)
-        self.situation = {} #what the agent understands
         self.technical_report = ""
         self.news_report = ""
         self.executive_summary = ""
@@ -45,17 +44,6 @@ class ReportAgent:
         prompt = self.build_prompt(prompt_file)
         analysis = generate_text(prompt)
         return analysis
-    
-
-#--------------------------------------------------------------------------------
-
-    def build_executive_summary(self):
-        summary = f"""
-EXECUTIVE SUMMARY 
-A {self.situation["severity"]} severity {self.situation["event_type"]} has been detected near {self.situation["location"]}. Estimated occupancy within the affected area is 
-{self.situation["estimated_occupancy"]} people. Current operational risk level is {self.situation["risk_level"]}.
-        """
-        return summary.strip()  # Remove leading/trailing whitespace
     
 
 #--------------------------------------------------------------------------------
@@ -148,7 +136,7 @@ END OF PIPELINE OUTPUT
 
         # Combine them
         prompt = template + "\n\n" + context
-        print(prompt)
+        # print(prompt)
 
         return prompt
     
@@ -157,7 +145,9 @@ END OF PIPELINE OUTPUT
 
     def save_reports(self):
 
-        event_folder = self.report_directory / self.situation["event_id"]
+        event_id = self.input_data["event"]["event_id"]
+
+        event_folder = self.report_directory / event_id
 
         event_folder.mkdir(parents=True, exist_ok=True)
 

@@ -47,15 +47,15 @@ def main():
     # agent6.generate_news_report()
     # agent6.save_reports()
 
-    print("\nLive USGS Event:")
-    print(json.dumps(state["occupancy"], indent=4))
+    # print("\nLive USGS Event:")
+    # print(json.dumps(state["occupancy"], indent=4))
  
 
-    # print(agent6.executive_summary)
-    # print(agent6.technical_report)
-    # print(agent6.news_report)
-    # agent6.generate_video_script()
-    # print(agent6.video_script)
+    print(agent6.executive_summary)
+    print(agent6.technical_report)
+    print(agent6.news_report)
+    agent6.generate_video_script()
+    print(agent6.video_script)
 
 if __name__ == "__main__":
     main()
