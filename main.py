@@ -16,17 +16,7 @@ def main():
     agent5 = CrowdSurgePredictionAgent()
      # Initialize with an empty state
 
-    raw_alert = {
-    "source": "USGS",
-    "event_id": "EQ001",
-    "event_type": "earthquake",
-    "magnitude": 6.2,
-    "latitude": 38.5816,
-    "longitude": -121.4944,
-    "location": "Sacramento"
-    }
-
-    state = agent1.process(raw_alert)
+    state = agent1.process(source="USGS")
     state = agent2.process(state)
 
     agent3_input = {
@@ -51,19 +41,21 @@ def main():
 
     agent6 = ReportAgent(state)
 
-    agent6.validate_input()
-    agent6.normalize_input()
+    # agent6.validate_input()
     agent6.generate_executive_summary()
-    agent6.generate_technical_report()
-    agent6.generate_news_report()
-    agent6.save_reports()
+    # agent6.generate_technical_report()
+    # agent6.generate_news_report()
+    # agent6.save_reports()
 
-    print("State after Agent 5 (Crowd Surge Prediction Agent):")
-    print(json.dumps(state["surge"], indent=4))
+    print("\nLive USGS Event:")
+    print(json.dumps(state["occupancy"], indent=4))
+ 
 
-    print(agent6.executive_summary)
-    print(agent6.technical_report)
-    print(agent6.news_report)
+    # print(agent6.executive_summary)
+    # print(agent6.technical_report)
+    # print(agent6.news_report)
+    # agent6.generate_video_script()
+    # print(agent6.video_script)
 
 if __name__ == "__main__":
     main()

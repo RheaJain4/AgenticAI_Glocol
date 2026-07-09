@@ -1,6 +1,7 @@
 #run using  python -m agents.Agent6_Report
 
 import json #lets python understand json files
+from multiprocessing import context
 from pathlib import Path #makes it easier to work with file paths
 from utils.llm import generate_text #so agent 6 can talk to gemini
 
@@ -13,6 +14,7 @@ class ReportAgent:
         self.technical_report = ""
         self.news_report = ""
         self.executive_summary = ""
+        self.video_script = ""
         self.report_directory = Path("reports") #path to the directory where reports will be saved
 
 
@@ -33,76 +35,6 @@ class ReportAgent:
 
         return True
     
-
-#--------------------------------------------------------------------------------
-    
-    def normalize_input(self): #method 3 to normalize the input data
-        print("\nNormalizing input data...")
-        event = self.input_data["event"]
-        research = self.input_data["research"]
-        occupancy = self.input_data["occupancy"]
-        risk = self.input_data["risk"]
-        surge = self.input_data["surge"]
-
-        if event["magnitude"] is not None:
-            hazard_metric = f"Magnitude {event['magnitude']}"
-
-        elif event["intensity"] is not None:
-            hazard_metric = f"Intensity {event['intensity']}"
-
-        else:
-            hazard_metric = "Unknown"
-
-        self.situation = {
-            # -----------------------------
-            # Event Information
-            # -----------------------------
-            "event_id": event["event_id"],
-            "event_type": event["event_type"],
-            "location": event["location"],
-            "latitude": event["latitude"],
-            "longitude": event["longitude"],
-            "coordinates": f"{event['latitude']}, {event['longitude']}",
-            "hazard_metric": hazard_metric,
-            "severity": event["severity"],
-
-            # -----------------------------
-            # Research
-            # -----------------------------
-            "affected_radius": research["affected_radius_km"],
-            "schools": research["schools"],
-            "hospitals": research["hospitals"],
-            "transit_stations": research["transit_stations"],
-            "infrastructure_count": research["infrastructure_count"],
-            "estimated_population": research["estimated_resident_population"],
-            "population_density": research["population_density_category"],
-
-            # -----------------------------
-            # Occupancy
-            # -----------------------------
-            "estimated_occupancy": occupancy["estimated_population"],
-            "high_density_zones": occupancy["high_density_zones"],
-
-            # -----------------------------
-            # Risk
-            # -----------------------------
-            "risk_level": risk["risk_level"],
-            "risk_score": risk["risk_score"],
-            "priority_area": risk["priority_area"],
-            "people_at_risk": risk["estimated_people_at_risk"],
-
-            # -----------------------------
-            # Crowd Surge Prediction
-            # -----------------------------
-            "predicted_hotspots": surge["predicted_hotspots"],
-            "prediction_window": surge["time_window_minutes"],
-            "prediction_model": surge["prediction_model"],
-            "prediction_confidence": surge["confidence"],
-            #"congestion_probability": surge["congestion_probability"]
-
-    }
-
-        print("Input normalized successfully!")
 
 
 #--------------------------------------------------------------------------------
@@ -142,12 +74,21 @@ A {self.situation["severity"]} severity {self.situation["event_type"]} has been 
     
     def generate_news_report(self):
         print("\nGenerating news report...")
-        prompt_file = Path("prompts/news_report_prompt.txt")
+        prompt_file = "prompts/news_report_prompt.txt"
+        prompt = self.build_prompt(prompt_file)
+        self.news_report = generate_text(prompt)
+        print("\nNews report generated successfully!")
+
+#--------------------------------------------------------------------------------   
+    
+    def generate_video_script(self):
+        print("\nGenerating video script...")
+        prompt_file = Path("prompts/video_script_prompt.txt")
         prompt = self.build_prompt(prompt_file)
         response = generate_text(prompt)
-        self.news_report = response.strip()  # Remove leading/trailing whitespace
-        print("\nNews report generated successfully!")
-        return self.news_report
+        self.video_script = response.strip()
+        print("\nVideo script generated successfully!")
+        return self.video_script
     
 
 #--------------------------------------------------------------------------------    
@@ -155,65 +96,13 @@ A {self.situation["severity"]} severity {self.situation["event_type"]} has been 
     def generate_technical_report(self):
         print("\nGenerating technical report...")
 
-        report = f"""
-                EMERGENCY SITUATION TECHNICAL REPORT
-                
---------------------------------------------------------
+        prompt_file = "prompts/technical_prompt.txt"
 
-EVENT INFORMATION
+        prompt = self.build_prompt(prompt_file)
 
-Event ID: {self.situation["event_id"]}
-Disaster Type: {self.situation["event_type"]}
-Location: {self.situation["location"]}
-Coordinates: {self.situation["coordinates"]}
-{self.situation["hazard_metric"]}
-Severity: {self.situation["severity"]}
+        self.technical_report = generate_text(prompt)
 
---------------------------------------------------------
-
-AREA ASSESSMENT
-
-Affected Radius: {self.situation["affected_radius"]} km 
-Estimated Population: {self.situation["estimated_population"]}
-Population Density: {self.situation["population_density"]}
-Schools: {self.situation["schools"]} 
-Hospitals: {self.situation["hospitals"]}
-Transit Stations: {self.situation["transit_stations"]}
-Infrastructure Count: {self.situation["infrastructure_count"]}
-
---------------------------------------------------------
-
-OCCUPANCY ASSESSMENT
-
-Estimated Occupancy: {self.situation["estimated_occupancy"]}
-High Density Zones: {", ".join(self.situation["high_density_zones"])} 
-
---------------------------------------------------------
-
-RISK ASSESSMENT 
-Risk Level: {self.situation["risk_level"]}
-Risk Score: {self.situation["risk_score"]} 
-Priority Area: {self.situation["priority_area"]}
-Estimated People At Risk: {self.situation["people_at_risk"]}
-Predicted Hotspots:{", ".join(self.situation["predicted_hotspots"])}
-Prediction Confidence: {self.situation["prediction_confidence"]}
-"""
-        
-        analysis = self.generate_technical_analysis()
-
-        report += f"""
-
---------------------------------------------------------
-
-ANALYST OBSERVATIONS
-
-{analysis}
-
-"""
-        
-        self.technical_report = report
-        print("\n Report successfully generated")   
-        return self.technical_report.strip()  # Remove leading/trailing whitespace   
+        print("\nTechnical report generated successfully!") 
 
 
 #--------------------------------------------------------------------------------  
@@ -221,107 +110,28 @@ ANALYST OBSERVATIONS
     def build_context(self):
 
         context = f"""
-==================================================
-EMERGENCY EVENT INFORMATION
-==================================================
+The following JSON contains the complete output of the Emergency Intelligence Pipeline.
 
-EVENT
+This data has already been processed by specialized AI agents.
 
-Event ID:
-{self.situation["event_id"]}
+Instructions:
 
-Event Type:
-{self.situation["event_type"]}
+- Treat every field as factual.
+- Do NOT invent information.
+- If a value is missing, explicitly state that it is unavailable.
+- Base all reasoning only on the provided data.
 
-Location:
-{self.situation["location"]}
+=========================================================
+PIPELINE OUTPUT
+=========================================================
 
-Coordinates:
-{self.situation["coordinates"]}
+{json.dumps(self.input_data, indent=4)}
 
-Hazard Metric:
-{self.situation["hazard_metric"]}
-
-Severity:
-{self.situation["severity"]}
-
-
-==================================================
-AREA INFORMATION
-==================================================
-
-Affected Radius:
-{self.situation["affected_radius"]} km
-
-Estimated Resident Population:
-{self.situation["estimated_population"]}
-
-Population Density:
-{self.situation["population_density"]}
-
-
-==================================================
-INFRASTRUCTURE
-==================================================
-
-Schools:
-{self.situation["schools"]}
-
-Hospitals:
-{self.situation["hospitals"]}
-
-Transit Stations:
-{self.situation["transit_stations"]}
-
-Infrastructure Count:
-{self.situation["infrastructure_count"]}
-
-
-==================================================
-OCCUPANCY
-==================================================
-
-Estimated Occupancy:
-{self.situation["estimated_occupancy"]}
-
-High Density Zones:
-{", ".join(self.situation["high_density_zones"])}
-
-
-
-==================================================
-RISK
-==================================================
-
-Risk Level:
-{self.situation["risk_level"]}
-
-Risk Score:
-{self.situation["risk_score"]}
-
-Priority Area:
-{self.situation["priority_area"]}
-
-Estimated People At Risk:
-{self.situation["people_at_risk"]}
-
-
-==================================================
-CROWD SURGE PREDICTION
-==================================================
-
-Predicted Hotspots:
-{", ".join(self.situation["predicted_hotspots"])}
-
-Prediction Window:
-{self.situation["prediction_window"]} minutes
-
-Prediction Model:
-{self.situation["prediction_model"]}
-
-Prediction Confidence:
-{self.situation["prediction_confidence"]}
+=========================================================
+END OF PIPELINE OUTPUT
+=========================================================
 """
+
         return context
 
 
@@ -338,6 +148,7 @@ Prediction Confidence:
 
         # Combine them
         prompt = template + "\n\n" + context
+        print(prompt)
 
         return prompt
     
@@ -358,6 +169,9 @@ Prediction Confidence:
 
         with open(event_folder / "news_report.txt", "w", encoding="utf-8") as file:
             file.write(self.news_report)
+        
+        with open(event_folder / "video_script.txt", "w", encoding="utf-8") as file:
+            file.write(self.video_script)
 
         print("\nReports saved successfully.")
 #--------------------------------------------------------------------------------

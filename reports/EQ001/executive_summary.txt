@@ -1,5 +1,9 @@
-**Executive Summary - EQ001 Earthquake Response**
+**EXECUTIVE SUMMARY: Operational Situation Report – EQ001**
 
-An earthquake of Magnitude 6.2 has occurred in Sacramento, designated as HIGH severity with a CRITICAL overall risk level. This event is operationally significant due to its impact on an estimated 2.3 million residents within a 15 km radius, characterized by high population density and numerous critical infrastructures, including 14 hospitals and extensive transit systems.
+An earthquake, Magnitude 6.2, has occurred in Sacramento, triggering a HIGH severity assessment and CRITICAL overall risk level. This event poses significant operational challenges across a densely populated urban area, impacting vital infrastructure and numerous high-occupancy zones, with Sacramento State University (SAC-STATE) identified as a priority area.
 
-The most pressing operational concern is PS-0324 (SAC-STATE), identified as a priority risk area with an estimated 1150 people at immediate risk. Furthermore, a high-confidence crowd surge is predicted within 15 minutes at multiple hotspots, specifically main exits and stairwells across the SAC-STATE campus, key light rail platforms, the DMV, and SAC-AIRPORT-TERMINAL-B. This necessitates urgent crowd control and evacuation management. Initial assessments regarding structural integrity and casualty figures remain the primary uncertainty, requiring rapid on-ground verification.
+Key operational concerns include potential structural failures, immediate casualty management, and widespread disruption to essential services. An estimated 2,506 individuals are at critical risk, concentrated within the affected 15km radius.
+
+Compounding the immediate response, high-confidence crowd surge is predicted within the next 15 minutes. Hotspots include major exits at SAC-STATE facilities (e.g., PS-0324, University Union, AIRC), main campus pedestrian pathways, and nearby train station platforms.
+
+The full extent of structural damage and detailed impact on critical infrastructure remains largely unknown, necessitating rapid, comprehensive damage assessments to inform resource allocation and response priorities.

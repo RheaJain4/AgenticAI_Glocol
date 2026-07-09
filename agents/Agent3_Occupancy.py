@@ -260,6 +260,7 @@ class OccupancyAgent:
             "event_id": event_id,
             "estimated_population": estimated_population,
             "high_density_zones": high_density_zones,
+            "sensor_count": len(nearby)
         }
 
 

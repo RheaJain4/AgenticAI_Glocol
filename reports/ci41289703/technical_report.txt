@@ -1,0 +1,50 @@
+
+                EMERGENCY SITUATION TECHNICAL REPORT
+                
+--------------------------------------------------------
+
+EVENT INFORMATION
+
+Event ID: ci41289703
+Disaster Type: earthquake
+Location: 3 km NNE of Glendale, CA
+Coordinates: 34.1983333333333, -118.236166666667
+Magnitude 1.42
+Severity: LOW
+
+--------------------------------------------------------
+
+AREA ASSESSMENT
+
+Affected Radius: 5.0 km 
+Estimated Population: 23561
+Population Density: MEDIUM
+Schools: 0 
+Hospitals: 0
+Transit Stations: 0
+Infrastructure Count: 0
+
+--------------------------------------------------------
+
+OCCUPANCY ASSESSMENT
+
+Estimated Occupancy: 0
+High Density Zones:  
+
+--------------------------------------------------------
+
+RISK ASSESSMENT 
+Risk Level: LOW
+Risk Score: 36.0 
+Priority Area: Unknown
+Estimated People At Risk: 0
+Predicted Hotspots:Emergency Exit 1, Main Assembly Point
+Prediction Confidence: MEDIUM
+
+
+--------------------------------------------------------
+
+ANALYST OBSERVATIONS
+
+
+
