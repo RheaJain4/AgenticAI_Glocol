@@ -1,13 +1,17 @@
 import json
 import math
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 import requests
 
 
 class Agent2Research:
     def __init__(self):
-        self.overpass_url = "https://overpass-api.de/api/interpreter"
+        self.overpass_servers = [
+            "https://overpass-api.de/api/interpreter",
+            "https://overpass.kumi.systems/api/interpreter",
+            "https://overpass.private.coffee/api/interpreter",
+        ]
         self.user_agent = "PeopleSenseDisasterAgent/2.0"
 
     def calculate_affected_radius(self, magnitude: float) -> float:
@@ -23,7 +27,7 @@ class Agent2Research:
         radius_m = int(radius_km * 1000)
 
         query = f"""
-        [out:json][timeout:25];
+        [out:json][timeout:60];
         (
           node["amenity"="school"](around:{radius_m},{lat},{lon});
           way["amenity"="school"](around:{radius_m},{lat},{lon});
@@ -40,31 +44,38 @@ class Agent2Research:
         out center tags;
         """
 
-        try:
-            response = requests.post(
-                self.overpass_url,
-                data={"data": query},
-                headers={"User-Agent": self.user_agent},
-                timeout=30
-            )
-            response.raise_for_status()
-            return response.json()
+        for server in self.overpass_servers:
+            try:
+                print(f"Trying Overpass server: {server}")
 
-        except Exception as error:
-            print(f"[Agent 2 Error] Overpass API query failed: {error}")
-            return {"elements": []}
+                response = requests.post(
+                    server,
+                    data={"data": query},
+                    headers={"User-Agent": self.user_agent},
+                    timeout=90,
+                )
+
+                response.raise_for_status()
+
+                print("Connected successfully.")
+                return response.json()
+
+            except requests.RequestException as error:
+                print(f"Server failed: {server}")
+                print(error)
+                continue
+
+        print("All Overpass servers failed.")
+        return {"elements": []}
 
     def extract_location(self, element: Dict[str, Any]) -> Optional[Dict[str, float]]:
         if "lat" in element and "lon" in element:
-            return {
-                "latitude": element["lat"],
-                "longitude": element["lon"]
-            }
+            return {"latitude": element["lat"], "longitude": element["lon"]}
 
         if "center" in element:
             return {
                 "latitude": element["center"].get("lat"),
-                "longitude": element["center"].get("lon")
+                "longitude": element["center"].get("lon"),
             }
 
         return None
@@ -77,7 +88,7 @@ class Agent2Research:
             "id": str(element.get("id", "unknown")),
             "name": tags.get("name", "Unnamed"),
             "latitude": location["latitude"] if location else None,
-            "longitude": location["longitude"] if location else None
+            "longitude": location["longitude"] if location else None,
         }
 
     def categorize_places(self, elements: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
@@ -103,17 +114,15 @@ class Agent2Research:
 
             if amenity == "school":
                 schools.append(place)
-
             elif amenity == "hospital":
                 hospitals.append(place)
-
             elif railway == "station" or public_transport == "station":
                 transit_stations.append(place)
 
         return {
             "schools": schools,
             "hospitals": hospitals,
-            "transit_stations": transit_stations
+            "transit_stations": transit_stations,
         }
 
     def estimate_population(
@@ -121,10 +130,9 @@ class Agent2Research:
         schools_count: int,
         hospitals_count: int,
         stations_count: int,
-        radius_km: float
+        radius_km: float,
     ) -> Dict[str, Any]:
-
-        area_sq_km = math.pi * (radius_km ** 2)
+        area_sq_km = math.pi * (radius_km**2)
 
         estimated_population = (
             schools_count * 5000
@@ -147,7 +155,7 @@ class Agent2Research:
         return {
             "estimated_resident_population": int(estimated_population),
             "population_density_per_sq_km": round(density_per_sq_km, 2),
-            "population_density_category": density_category
+            "population_density_category": density_category,
         }
 
     def process(self, payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -166,11 +174,7 @@ class Agent2Research:
 
         affected_radius_km = self.calculate_affected_radius(magnitude)
 
-        osm_data = self.query_overpass(
-            latitude,
-            longitude,
-            affected_radius_km
-        )
+        osm_data = self.query_overpass(latitude, longitude, affected_radius_km)
 
         elements = osm_data.get("elements", [])
         categorized = self.categorize_places(elements)
@@ -183,7 +187,7 @@ class Agent2Research:
             schools_count=len(schools),
             hospitals_count=len(hospitals),
             stations_count=len(transit_stations),
-            radius_km=affected_radius_km
+            radius_km=affected_radius_km,
         )
 
         research = {
@@ -194,7 +198,7 @@ class Agent2Research:
             "infrastructure_count": len(schools) + len(hospitals) + len(transit_stations),
             "estimated_resident_population": population["estimated_resident_population"],
             "population_density_per_sq_km": population["population_density_per_sq_km"],
-            "population_density_category": population["population_density_category"]
+            "population_density_category": population["population_density_category"],
         }
 
         return {
@@ -206,8 +210,8 @@ class Agent2Research:
                 "event_id": event_id,
                 "schools": schools,
                 "hospitals": hospitals,
-                "transit_stations": transit_stations
-            }
+                "transit_stations": transit_stations,
+            },
         }
 
 
@@ -220,7 +224,7 @@ if __name__ == "__main__":
             "latitude": 34.12,
             "longitude": -118.45,
             "location": "California",
-            "severity": "HIGH"
+            "severity": "HIGH",
         }
     }
 
