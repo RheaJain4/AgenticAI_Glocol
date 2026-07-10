@@ -2,7 +2,7 @@ import json
 import os
 
 class CrowdSurgePredictionAgent:
-    def __init__(self, model_type="XGBoost"):
+    def __init__(self, model_type="Gemini-2.5-Flash AI"):
         self.model_type = model_type
 
     def run(self, current_state: dict) -> dict:
@@ -10,21 +10,14 @@ class CrowdSurgePredictionAgent:
         Takes the accumulated JSON data from Agents 1-4 and predicts
         future crowd movement and congestion hotspots.
         """
-        # Extract necessary fields from previous agents safely
-        # Handle both nested and flattened structures
         event_data = current_state.get("event", current_state)
         occupancy_data = current_state.get("occupancy", current_state)
         risk_data = current_state.get("risk", current_state)
         
-        # Pull high density zones identified by Agent 3
         high_density_zones = occupancy_data.get("high_density_zones", [])
         priority_area = risk_data.get("priority_area", "")
         severity = event_data.get("severity", "MEDIUM")
-
-        # --- Crowd Dynamics & Prediction Logic ---
-        import json
         
-        # Try to use LLM for true AI prediction
         prompt = f"""
         You are an expert crowd dynamics AI for emergency response. 
         Based on the following disaster situation, predict the most likely crowd congestion hotspots (specific exits, routes, or choke points) and a congestion probability (0.0 to 1.0).
@@ -33,29 +26,37 @@ class CrowdSurgePredictionAgent:
         Known High Density Zones: {high_density_zones}
         Priority Risk Area: {priority_area}
         Risk Score: {risk_data.get("risk_score", 50)}/100
-        
-        Respond ONLY with a valid JSON object in this exact format, with no markdown formatting or extra text:
-        {{
-            "predicted_hotspots": ["Specific Choke Point 1", "Evacuation Route A", "Main Exit"],
-            "congestion_probability": 0.85
-        }}
         """
+        
+        # Define the exact JSON schema we want back
+        schema = {
+            "type": "OBJECT",
+            "properties": {
+                "predicted_hotspots": {
+                    "type": "ARRAY",
+                    "items": {"type": "STRING"}
+                },
+                "congestion_probability": {
+                    "type": "NUMBER"
+                }
+            },
+            "required": ["predicted_hotspots", "congestion_probability"]
+        }
         
         predicted_hotspots = []
         congestion_probability = 0.50
         used_model = "Rule-based Fallback"
         
         try:
-            # We import locally here to avoid circular imports if any, and because it's only needed for this step
-            from utils.llm import generate_text
-            llm_response = generate_text(prompt)
+            from utils.llm import generate_json
+            # This guarantees perfectly formatted JSON that matches our schema
+            llm_response = generate_json(prompt, schema)
+            
             if llm_response:
-                clean_json = llm_response.replace('```json', '').replace('```', '').strip()
-                ai_data = json.loads(clean_json)
-                
+                ai_data = json.loads(llm_response)
                 predicted_hotspots = ai_data.get("predicted_hotspots", [])
                 congestion_probability = float(ai_data.get("congestion_probability", 0.50))
-                used_model = "Gemini-2.5-Flash AI"
+                used_model = "Gemini-2.5-Flash AI (Structured)"
         except Exception as e:
             print(f"[Agent 5] LLM Prediction failed, using fallback. Error: {e}")
             
@@ -81,7 +82,6 @@ class CrowdSurgePredictionAgent:
             if risk_score > 80: base_probability += 0.12
             congestion_probability = min(round(base_probability, 2), 1.0)
             
-        # Determine time window based on severity
         if severity == "CRITICAL": time_window_minutes = 10
         elif severity == "HIGH": time_window_minutes = 15
         elif severity == "MEDIUM": time_window_minutes = 30
@@ -90,10 +90,8 @@ class CrowdSurgePredictionAgent:
         risk_score = risk_data.get("risk_score", 50)
         confidence_level = "HIGH" if risk_score > 70 else "MEDIUM"
         
-        # Override self.model_type for output
         self.model_type = used_model
 
-        # Build Agent 5's required output structure
         surge_output = {
             "predicted_hotspots": predicted_hotspots,
             "time_window_minutes": time_window_minutes,
@@ -102,13 +100,10 @@ class CrowdSurgePredictionAgent:
             "congestion_probability": congestion_probability
         }
 
-        # Append your result to the global pipeline state
         current_state["surge"] = surge_output
         return current_state
 
-# Quick self-test block to verify it runs without crashing
 if __name__ == "__main__":
-    # Mocking sample data matching the exact output chain from Agents 1-4
     sample_pipeline_input = {
         "event": {
             "event_id": "EQ001",
@@ -145,4 +140,7 @@ if __name__ == "__main__":
     final_output = agent.run(sample_pipeline_input)
     
     print("--- AGENT 5 OUTPUT VERIFICATION ---")
-    print(json.dumps(final_output, indent=2))
+    if "surge" in final_output:
+        print(json.dumps(final_output["surge"], indent=2))
+    else:
+        print(json.dumps(final_output, indent=2))
