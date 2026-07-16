@@ -1,0 +1,5 @@
+An earthquake of magnitude 1.74 has occurred 7 km SE of Pāhala, Hawaii. The event is assessed as LOW severity, with an estimated affected radius of 5 km. No critical infrastructure, such as schools, hospitals, or transit stations, were identified within this area. The estimated resident population within the affected radius is 27,488.
+
+The overall operational risk level is assessed as LOW, with an estimated zero people at immediate risk. Live occupancy data could not be determined as no PeopleSense sensors are available in the area. Earthquake intensity information is currently unavailable.
+
+Despite the low risk, there is a medium confidence (45%) prediction for potential crowd congestion within 60 minutes, particularly at building main exits, stairwells, and emergency exits. Emergency managers should monitor for potential egress challenges in the event of any localized response actions. No immediate large-scale actions appear warranted given the current data.

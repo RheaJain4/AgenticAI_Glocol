@@ -1,0 +1,123 @@
+Here is the cinematic emergency broadcast video script:
+
+==================================================
+
+**Emergency Broadcast Video Script**
+
+**Target Length:** 93 seconds
+
+---
+
+**Scene Number 1**
+*   **Duration:** 5 seconds
+*   **Visual Description:** Red screen with "EMERGENCY BROADCAST SYSTEM" overlay, flashing gently.
+*   **Camera Direction:** Static shot.
+*   **On-screen Graphics:** "EMERGENCY BROADCAST SYSTEM - ACTIVATED"
+*   **Voiceover:** (Deep, urgent, calm voice) "We interrupt this program for an emergency broadcast. This is an alert from the Emergency Intelligence Platform."
+*   **Transition:** Hard cut to map.
+*   **Background Audio:** Urgent, low-frequency warning tone, fading into a subtle, persistent ambient drone.
+
+---
+
+**Scene Number 2**
+*   **Duration:** 18 seconds
+*   **Visual Description:** Animated global map zooms into Hawaii, specifically the Big Island. A pulsating red circle appears at the earthquake's epicenter, expanding slightly to show the 5.0 km affected radius.
+*   **Camera Direction:** Zooming in, then static over the affected area.
+*   **On-screen Graphics:**
+    *   "EVENT: EARTHQUAKE"
+    *   "LOCATION: 7 km SE of Pāhala, Hawaii"
+    *   "MAGNITUDE: 1.74"
+    *   "SEVERITY: LOW"
+    *   "AFFECTED RADIUS: 5.0 km"
+*   **Voiceover:** "An earthquake event, ID hv75002592, has been confirmed. The epicenter is located approximately 7 kilometers southeast of Pāhala, Hawaii. This event registered a factual magnitude of 1.74. Based on current data, the overall severity is assessed as LOW. The potentially affected radius is a factual 5.0 kilometers from the epicenter. We currently have no information regarding seismic intensity."
+*   **Transition:** Smooth wipe to infrastructure graphic overlay on the map.
+*   **Background Audio:** Continues subtle ambient drone.
+
+---
+
+**Scene Number 3**
+*   **Duration:** 12 seconds
+*   **Visual Description:** Overlay on the map showing the affected radius. Text boxes highlight infrastructure counts and estimated population.
+*   **Camera Direction:** Static over the map.
+*   **On-screen Graphics:**
+    *   "INFRASTRUCTURE WITHIN 5 KM RADIUS:"
+    *   "SCHOOLS: 0"
+    *   "HOSPITALS: 0"
+    *   "TRANSIT STATIONS: 0"
+    *   "ESTIMATED RESIDENT POPULATION: 27,488"
+*   **Voiceover:** "Within the factual 5-kilometer affected radius, current data indicates no registered schools, hospitals, or transit stations. The estimated resident population within the broader area is 27,488 individuals, with a medium population density category."
+*   **Transition:** Cut to a PeopleSense graphic.
+*   **Background Audio:** Subtle ambient drone.
+
+---
+
+**Scene Number 4**
+*   **Duration:** 10 seconds
+*   **Visual Description:** A prominent graphic displaying "PeopleSense Data: Unavailable" with an icon indicating no sensors present.
+*   **Camera Direction:** Static shot on graphic.
+*   **On-screen Graphics:**
+    *   "PEOPLESENSE LIVE OCCUPANCY"
+    *   "SENSOR COUNT: 0"
+    *   "OCCUPANCY DATA: UNAVAILABLE"
+*   **Voiceover:** "Regarding live occupancy, there are currently no PeopleSense sensors detected within the affected area. Therefore, real-time occupancy estimates are unavailable at this time."
+*   **Transition:** Fade to risk assessment graphic.
+*   **Background Audio:** Subtle ambient drone.
+
+---
+
+**Scene Number 5**
+*   **Duration:** 10 seconds
+*   **Visual Description:** A clear graphic showing "RISK LEVEL: LOW" with a prominent green indicator.
+*   **Camera Direction:** Static shot on graphic.
+*   **On-screen Graphics:**
+    *   "OPERATIONAL RISK ASSESSMENT"
+    *   "RISK LEVEL: LOW"
+    *   "ESTIMATED PEOPLE AT RISK: 0"
+    *   "PRIORITY AREA: UNKNOWN"
+*   **Voiceover:** "Based on the collected data, the operational risk level for this event is assessed as LOW, with a factual risk score of 36. We estimate zero people are currently at risk. A specific priority area for response is currently unknown."
+*   **Transition:** Cut to crowd surge prediction graphic.
+*   **Background Audio:** Subtle ambient drone.
+
+---
+
+**Scene Number 6**
+*   **Duration:** 18 seconds
+*   **Visual Description:** Animated schematic of a generic building interior with "hotspots" highlighted: main exits, stairwells, emergency exits. A probability meter animates to 45%.
+*   **Camera Direction:** Tracking around the schematic, highlighting predicted areas.
+*   **On-screen Graphics:**
+    *   "CROWD SURGE PREDICTION (Estimated)"
+    *   "PREDICTED HOTSPOTS: Building main exits, Stairwells, Emergency exits"
+    *   "CONGESTION PROBABILITY: 45% (Estimated, MEDIUM Confidence)"
+    *   "TIME WINDOW: Next 60 minutes"
+*   **Voiceover:** "Our Crowd Surge Prediction Agent estimates a congestion probability of 45% within the next 60 minutes, with medium confidence. Potential hotspots predicted include building main exits, stairwells, and emergency exits. This information is based on predictive modeling and should be treated as an estimate."
+*   **Transition:** Dissolve to safety recommendations.
+*   **Background Audio:** Subtle ambient drone.
+
+---
+
+**Scene Number 7**
+*   **Duration:** 15 seconds
+*   **Visual Description:** Clear, concise text overlay with actionable recommendations. Icons for "Stay Calm", "Check for Damage", "Listen for Updates".
+*   **Camera Direction:** Static on recommendations.
+*   **On-screen Graphics:**
+    *   "PUBLIC SAFETY RECOMMENDATIONS"
+    *   "• STAY CALM"
+    *   "• CHECK FOR MINOR DAMAGE"
+    *   "• AVOID UNAUTHORIZED EVACUATIONS"
+    *   "• LISTEN FOR OFFICIAL UPDATES"
+*   **Voiceover:** "Given the low severity and magnitude of this earthquake, the public is advised to remain calm. Check your surroundings for any minor damage. Avoid any unauthorized evacuations and listen for further official updates from local authorities."
+*   **Transition:** Fade to closing statement graphic.
+*   **Background Audio:** Subtle ambient drone, slightly more reassuring tone.
+
+---
+
+**Scene Number 8**
+*   **Duration:** 5 seconds
+*   **Visual Description:** Emergency Intelligence Platform logo.
+*   **Camera Direction:** Static.
+*   **On-screen Graphics:** "EMERGENCY INTELLIGENCE PLATFORM - Staying Informed, Staying Safe"
+*   **Voiceover:** "This concludes our emergency briefing. Stay informed, stay safe. We will provide updates as new information becomes available."
+*   **Transition:** Fade to black.
+*   **Background Audio:** Ambient drone fades out with a final, reassuring chime.
+
+---

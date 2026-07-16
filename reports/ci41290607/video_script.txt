@@ -1,0 +1,136 @@
+Here is the emergency broadcast video script, tailored to the provided intelligence data:
+
+==================================================
+
+**EMERGENCY BROADCAST: EARTHQUAKE ALERT – JULIAN, CA**
+
+**TARGET LENGTH: 95-110 seconds**
+
+---
+
+**Scene 1: Opening Emergency Alert**
+
+*   **Duration:** 6 seconds
+*   **Visual Description:** Red, flashing emergency alert graphic with a deep warning tone. Text slowly fades in: "EMERGENCY BROADCAST SYSTEM – EARTHQUAKE ALERT."
+*   **Camera Direction:** Static, centered on graphics.
+*   **On-screen Graphics:** "EMERGENCY ALERT: EARTHQUAKE"
+*   **Voiceover:** (Urgent, authoritative tone) "We interrupt this programming for an emergency broadcast. An earthquake event has been detected impacting the area near Julian, California."
+*   **Transition:** Fade to black.
+*   **Background Audio:** Short, sharp emergency alert tone, then fades to a low, steady drone.
+
+---
+
+**Scene 2: Map Animation Showing the Event**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** World map zooms into California, then specifically to the area around Julian. A red circle animates to show a 5-kilometer affected radius southeast of Julian. An epicenter marker flashes at the coordinates.
+*   **Camera Direction:** Dynamic zoom and pan.
+*   **On-screen Graphics:**
+    *   "EARTHQUAKE: 24 km ESE of Julian, CA"
+    *   "MAGNITUDE: 1.11"
+    *   "SEVERITY: LOW"
+    *   "AFFECTED RADIUS: 5.0 km"
+*   **Voiceover:** "Our Emergency Intelligence Platform reports an earthquake of observed magnitude 1.11, located approximately 24 kilometers ESE of Julian, California. The event has been assessed with a LOW severity. The immediate affected radius is estimated at 5.0 kilometers from the epicenter."
+*   **Transition:** Smooth wipe to next scene.
+*   **Background Audio:** Gentle, persistent hum with subtle map animation sounds.
+
+---
+
+**Scene 3: Infrastructure and Population Overview**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** Animated infographic displays icons for infrastructure (schools, hospitals, transit) with '0' next to them. Then, a graphic showing population data.
+*   **Camera Direction:** Static on infographic, then slight pan.
+*   **On-screen Graphics:**
+    *   "INFRASTRUCTURE WITHIN 5KM RADIUS:"
+    *   "Schools: 0"
+    *   "Hospitals: 0"
+    *   "Transit Stations: 0"
+    *   "ESTIMATED RESIDENT POPULATION: 27,488"
+    *   "POPULATION DENSITY: MEDIUM"
+*   **Voiceover:** "Our research agent indicates that within the affected 5-kilometer radius, there are currently no observed schools, hospitals, or transit stations. The estimated resident population in this area is 27,488, with an estimated population density categorized as Medium."
+*   **Transition:** Cross-dissolve.
+*   **Background Audio:** Soft, informational background music.
+
+---
+
+**Scene 4: PeopleSense Live Occupancy Assessment**
+
+*   **Duration:** 10 seconds
+*   **Visual Description:** Graphic displaying a 'No Sensor Data' icon or a grid with "PeopleSense UNAVAILABLE" text.
+*   **Camera Direction:** Static on graphic.
+*   **On-screen Graphics:**
+    *   "LIVE OCCUPANCY ASSESSMENT"
+    *   "PeopleSense Data: UNAVAILABLE"
+    *   "No PeopleSense sensors within affected area."
+*   **Voiceover:** "Regarding live occupancy, our PeopleSense sensors report zero sensor counts in the affected area. Therefore, real-time occupancy estimates and high-density zones through PeopleSense are currently unavailable for this location."
+*   **Transition:** Quick cut.
+*   **Background Audio:** Continues soft informational music, slightly muted.
+
+---
+
+**Scene 5: Risk Assessment**
+
+*   **Duration:** 12 seconds
+*   **Visual Description:** A prominent "RISK LEVEL: LOW" graphic. Below it, "Estimated People at Risk: 0."
+*   **Camera Direction:** Static, focused on key risk metrics.
+*   **On-screen Graphics:**
+    *   "RISK ASSESSMENT"
+    *   "RISK LEVEL: LOW"
+    *   "ESTIMATED PEOPLE AT RISK: 0"
+    *   "PRIORITY AREA: Unknown"
+*   **Voiceover:** "Our risk assessment agent has determined the overall operational risk level for this event as LOW, with an estimated zero people at risk directly from the earthquake. The identified priority area remains unknown at this time."
+*   **Transition:** Fade to white.
+*   **Background Audio:** Tense, but controlled underscore.
+
+---
+
+**Scene 6: Crowd Surge Prediction**
+
+*   **Duration:** 18 seconds
+*   **Visual Description:** Animation showing generic building layouts with red highlights on exit points, stairwells, and lobbies. Text detailing prediction details.
+*   **Camera Direction:** Illustrative animation.
+*   **On-screen Graphics:**
+    *   "CROWD SURGE PREDICTION (Next 60 mins)"
+    *   "CONGESTION PROBABILITY: ESTIMATED 70%"
+    *   "PREDICTED HOTSPOTS (General):"
+    *   "- Main building exits"
+    *   "- Stairwell bottlenecks"
+    *   "- Ground floor lobbies leading to exits"
+    *   "CONFIDENCE: MEDIUM"
+*   **Voiceover:** "Despite the low risk, our Crowd Surge Prediction Agent estimates a 70% probability of localized congestion within the next 60 minutes, with medium confidence. Potential hotspots for this congestion include main building exits, stairwell bottlenecks, and ground floor lobbies leading to exits. This is a predictive model identifying typical congestion points."
+*   **Transition:** Pan across information.
+*   **Background Audio:** Slightly more intense hum, reflecting prediction, then eases.
+
+---
+
+**Scene 7: Public Safety Recommendations**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** Simple text-based recommendations appearing on screen. Calm, reassuring visuals (e.g., family standing in a safe doorway).
+*   **Camera Direction:** Static, focused on text and relevant imagery.
+*   **On-screen Graphics:**
+    *   "PUBLIC SAFETY RECOMMENDATIONS"
+    *   "1. Stay Calm."
+    *   "2. Check for minor damage."
+    *   "3. Be aware of potential congestion at exits if inside buildings."
+    *   "4. Follow local authorities for updates."
+*   **Voiceover:** "Given the low severity and estimated zero people at risk, we recommend the public remain calm. Check your immediate surroundings for any minor damage. If you are inside a building, be aware of the potential for localized congestion at main exits, stairwells, and lobbies. Continue to monitor official channels for further updates."
+*   **Transition:** Fade to dark blue.
+*   **Background Audio:** Calm, reassuring music.
+
+---
+
+**Scene 8: Closing Statement**
+
+*   **Duration:** 4 seconds
+*   **Visual Description:** Emergency Intelligence Platform logo with contact information.
+*   **Camera Direction:** Static.
+*   **On-screen Graphics:**
+    *   "Emergency Intelligence Platform"
+    *   "STAY INFORMED. STAY SAFE."
+*   **Voiceover:** "This concludes our emergency briefing. Stay informed and stay safe."
+*   **Transition:** Fade to black.
+*   **Background Audio:** Fades out.
+
+---

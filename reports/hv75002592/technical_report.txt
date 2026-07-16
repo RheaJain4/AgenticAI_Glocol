@@ -1,0 +1,73 @@
+==================================================
+EVENT INFORMATION
+==================================================
+• Event ID: hv75002592
+• Event type: earthquake
+• Location: 7 km SE of Pāhala, Hawaii
+• Coordinates: 19.1609992980957, -155.424667358398
+• Hazard metric: Magnitude 1.74 (Intensity information is unavailable)
+• Severity: LOW
+
+==================================================
+AREA ASSESSMENT
+==================================================
+• Affected radius: 5.0 km
+• Population estimate: An estimated 27,488 resident population within the affected radius.
+• Population density: An estimated 349.99 people per square kilometer, categorized as MEDIUM density.
+• Geographic observations: The event is located 7 km SE of Pāhala, Hawaii. The estimated population density is medium, suggesting a moderately populated area.
+
+==================================================
+INFRASTRUCTURE ANALYSIS
+==================================================
+• Schools: 0 (No schools identified in the affected area.)
+• Hospitals: 0 (No hospitals identified in the affected area.)
+• Transit stations: 0 (No transit stations identified in the affected area.)
+• Other critical infrastructure: 0 (No other critical infrastructure identified in the affected area.)
+
+Operationally, the absence of schools, hospitals, transit stations, and other critical infrastructure within the affected radius indicates a very low direct impact on essential services and facilities. This minimizes the immediate need for resource allocation for infrastructure protection or medical response related to these specific categories.
+
+==================================================
+LIVE OCCUPANCY ASSESSMENT
+==================================================
+• PeopleSense occupancy: An estimated 0 people are detected by PeopleSense sensors.
+• High-density zones: No high-density zones have been identified.
+• Sensor availability: 0 PeopleSense sensors are present in the affected area.
+
+Live occupancy cannot be determined as no PeopleSense sensors exist in the affected area.
+
+==================================================
+RISK ASSESSMENT
+==================================================
+• Risk level: LOW
+• Risk score: 36.0
+• Priority area: Unknown
+• Estimated people at risk: An estimated 0 people are at risk.
+
+This assessment of "LOW" risk was reached due to several factors: the earthquake's low severity (Magnitude 1.74), the complete absence of identified critical infrastructure (schools, hospitals, transit stations) in the affected radius, and the estimated zero people currently detected as being at risk or within high-density zones. The estimated resident population density is medium, but without specific impact on infrastructure or observed occupancy, the overall operational risk remains low. The priority area is currently unknown.
+
+==================================================
+CROWD SURGE PREDICTION
+==================================================
+• Predicted hotspots: Building main exits, Stairwells, Emergency exits
+• Prediction window: 60 minutes
+• Congestion probability: An estimated 0.45 (45%) probability of congestion.
+• Prediction confidence: MEDIUM
+
+Likely causes of congestion are associated with typical egress points during an emergency event such as an earthquake, including main building exits, stairwells, and emergency exits. Although the overall estimated people at risk is zero and live occupancy data is unavailable, the model predicts a medium probability of localized congestion at these specific points within a 60-minute window, indicating potential, albeit minor, movement or evacuation responses.
+
+==================================================
+ANALYST OBSERVATIONS
+==================================================
+• Operational priorities: Given the low severity earthquake, zero identified critical infrastructure impact, and estimated zero people at risk, the immediate operational priorities are low. Primary focus should be on continued monitoring for aftershocks and any emergent localized impacts or reports from the public.
+• Resource allocation recommendations: Minimal initial resource allocation is recommended. No immediate deployment of emergency services or significant resource commitment is indicated by the current data.
+• Crowd management considerations: While crowd surge prediction identifies typical egress hotspots, the estimated zero people at risk and lack of live occupancy data suggest that actual crowd management needs are likely to be negligible. Monitoring of these egress points for any unexpected activity may be warranted.
+• Monitoring recommendations:
+    - Continuous monitoring of USGS and other seismic sources for aftershocks or changes in event severity.
+    - Monitor local news and social media for any public reports of damage or injuries not captured by sensors.
+    - Continue to monitor for any updates regarding infrastructure status, especially as more information becomes available.
+• Data limitations:
+    - Earthquake intensity data (Modified Mercalli Intensity) is unavailable.
+    - Live occupancy data from PeopleSense sensors is unavailable due to zero sensor presence.
+    - The priority area has been identified as "Unknown."
+    - All population, occupancy, people at risk, and congestion probability figures are estimates.
+• Confidence assessment: Overall confidence in the immediate operational picture is MEDIUM. While the hazard information is clear and the lack of infrastructure impact is confirmed, the absence of live occupancy data and earthquake intensity information represents a significant data gap for a complete real-time assessment. The "MEDIUM" confidence in crowd surge prediction indicates some uncertainty.

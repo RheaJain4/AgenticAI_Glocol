@@ -1,0 +1,37 @@
+TITLE: EMERGENCY BRIEFING: LOW MAGNITUDE EARTHQUAKE NEAR MCCARTHY, ALASKA
+
+SCENE 1
+Duration: 15 seconds
+Visual: Emergency Broadcast System (EBS) graphic, transitioning to a map with a pinpoint indicating the location near McCarthy, Alaska.
+Voiceover: Good [Morning/Afternoon/Evening]. This is an emergency briefing from the AI Emergency Broadcast Producer. At [Current Time], an earthquake with a magnitude of 1.4 has occurred.
+On-screen Text: EMERGENCY BRIEFING | EARTHQUAKE EVENT | MAGNITUDE 1.4
+
+SCENE 2
+Duration: 20 seconds
+Visual: Zoomed-in map showing the estimated 5-kilometer affected radius around the epicenter. Overlays indicate the absence of critical infrastructure.
+Voiceover: The epicenter is located approximately 89 kilometers ESE of McCarthy, Alaska. The event is currently assessed as having a LOW severity, and no intensity information is available. The estimated affected radius is 5 kilometers. Within this radius, no schools, hospitals, or transit stations have been identified, and no significant critical infrastructure has been reported as directly impacted.
+On-screen Text: LOCATION: 89 KM ESE OF MCCARTHY, ALASKA | SEVERITY: LOW | AFFECTED RADIUS: 5 KM
+
+SCENE 3
+Duration: 20 seconds
+Visual: Graphic displaying population data for the research area. Transition to a graphic indicating "No Live Occupancy Data" with a PeopleSense icon.
+Voiceover: The estimated resident population within the broader research area is approximately 27,488, with a medium population density. Regarding live occupancy, no PeopleSense sensors are available within the immediate affected area, therefore, live occupancy information could not be determined. The overall risk level for this event is assessed as LOW, and there are currently no estimated people at direct risk from the earthquake's impact.
+On-screen Text: ESTIMATED POPULATION: 27,488 (Research Area) | LIVE OCCUPANCY: NOT DETERMINED | RISK LEVEL: LOW | PEOPLE AT RISK: 0
+
+SCENE 4
+Duration: 20 seconds
+Visual: Animated graphic illustrating potential congestion points in a generic building layout, highlighting exits and stairwells.
+Voiceover: Our intelligence pipeline, utilizing the Gemini-2.5-Flash AI model, predicts potential congestion hotspots within the next 60 minutes, with medium confidence and a 65% probability. These predicted areas include Main Building Exits, Primary Stairwells, and Emergency Exit Doors.
+On-screen Text: PREDICTED CONGESTION HOTSPOTS | MAIN BUILDING EXITS | PRIMARY STAIRWELLS | EMERGENCY EXIT DOORS | TIME WINDOW: 60 MIN
+
+SCENE 5
+Duration: 20 seconds
+Visual: Image of emergency services personnel or a generic "monitoring" graphic. Text overlay with safety recommendations.
+Voiceover: Emergency services and local authorities are aware of the event and are actively monitoring the situation. Given the low magnitude of this earthquake, significant structural damage or widespread impact is not anticipated. Residents in the vicinity are advised to remain calm. If any shaking was perceived, please conduct a brief check of your surroundings for any minor, localized damage.
+On-screen Text: AUTHORITIES MONITORING | REMAIN CALM | CHECK FOR LOCALIZED DAMAGE IF SHAKING FELT
+
+SCENE 6
+Duration: 10 seconds
+Visual: Final emergency broadcast graphic with official contact information placeholder.
+Voiceover: Stay informed through official channels for any further updates. We will continue to provide information as it becomes available. Your safety remains our top priority.
+On-screen Text: STAY INFORMED | OFFICIAL CHANNELS | SAFETY IS PRIORITY
