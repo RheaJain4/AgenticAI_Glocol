@@ -3,7 +3,6 @@
     "risk_level": "LOW | MEDIUM | HIGH | CRITICAL",
     "priority_area": "string",
     "estimated_people_at_risk": "integer",
-    "risk_score": "number (0-100)",
-    "confidence": "LOW | MEDIUM | HIGH"
+    "risk_score": "number (0-100)"
   }
 }
