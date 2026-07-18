@@ -7,7 +7,7 @@ class RiskAssessmentAgent:
     Agent 4: Risk Assessment Agent
 
     Combines:
-    - Event severity/magnitude
+    - Event severity
     - Population density
     - Occupancy
     - Infrastructure
@@ -23,7 +23,7 @@ class RiskAssessmentAgent:
         Converts severity or magnitude into a score out of 100.
         """
 
-        severity = severity.upper()
+        severity = str(severity).upper()
 
         if severity == "CRITICAL":
             return 100
@@ -34,7 +34,7 @@ class RiskAssessmentAgent:
         elif severity == "LOW":
             return 40
 
-        # If severity is unavailable, use magnitude
+        # Fallback using magnitude
         if magnitude >= 7:
             return 100
         elif magnitude >= 6:
@@ -50,7 +50,7 @@ class RiskAssessmentAgent:
         affected_radius_km: float,
     ) -> float:
         """
-        Normalize using population density instead of absolute population.
+        Normalize population using population density.
         """
 
         if affected_radius_km <= 0:
@@ -71,6 +71,9 @@ class RiskAssessmentAgent:
             return 20
 
     def normalize_occupancy(self, occupancy: int) -> float:
+        """
+        Normalize occupancy to a score out of 100.
+        """
 
         if occupancy >= 5000:
             return 100
@@ -84,6 +87,9 @@ class RiskAssessmentAgent:
             return 20
 
     def normalize_infrastructure(self, infrastructure: int) -> float:
+        """
+        Normalize infrastructure count to a score out of 100.
+        """
 
         if infrastructure >= 20:
             return 100
@@ -103,17 +109,23 @@ class RiskAssessmentAgent:
         occupancy_score: float,
         infrastructure_score: float,
     ) -> float:
+        """
+        Weighted risk score.
+        """
 
         score = (
-            0.30 * severity_score
-            + 0.25 * population_score
-            + 0.30 * occupancy_score
-            + 0.15 * infrastructure_score
+            (0.30 * severity_score)
+            + (0.25 * population_score)
+            + (0.30 * occupancy_score)
+            + (0.15 * infrastructure_score)
         )
 
         return round(score, 2)
 
     def determine_risk_level(self, risk_score: float) -> str:
+        """
+        Converts numerical risk score to categorical level.
+        """
 
         if risk_score >= 80:
             return "CRITICAL"
@@ -130,9 +142,12 @@ class RiskAssessmentAgent:
         research: Dict[str, Any],
         occupancy: Dict[str, Any],
     ) -> Dict[str, Any]:
+        """
+        Generates the final risk assessment.
+        """
 
         severity_score = self.severity_to_score(
-            event.get("severity", ""),
+            event.get("severity"),
             event.get("magnitude", 0),
         )
 
