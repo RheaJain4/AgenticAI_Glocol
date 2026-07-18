@@ -1,62 +1,106 @@
-from agents.Agent1_Ingestion import Agent1Ingestion
-from agents.Agent2_Research import Agent2Research
-from agents.Agent3_Occupancy import OccupancyAgent
-from agents.Agent4_RiskAssesment import RiskAssessmentAgent
-from agents.Agent5_CrowdSurgePrediction import CrowdSurgePredictionAgent
-from agents.Agent6_Report import ReportAgent
+import sys
+import argparse
+import logging
 import json
 
-def main():
+from orchestrator import PipelineOrchestrator
+from config import is_mqtt_enabled
 
-    print("Starting Emergency Intelligence Pipeline...")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+)
+logger = logging.getLogger(__name__)
 
-    agent1 = Agent1Ingestion()
-    agent2 = Agent2Research()
-    agent3 = OccupancyAgent()
-    agent4 = RiskAssessmentAgent()
-    agent5 = CrowdSurgePredictionAgent()
 
-    state = agent1.process(source="USGS")
+def run_poll_mode(source: str = "USGS"):
+    """One-shot pipeline execution (original behavior)."""
+    print("Starting Emergency Intelligence Pipeline (poll mode)...")
 
-    state = agent2.process(state)
+    orchestrator = PipelineOrchestrator()
+    state = orchestrator.run_pipeline(source=source)
 
-    agent3_input = {
-        "event_id": state["event"]["event_id"],
-        "latitude": state["event"]["latitude"],
-        "longitude": state["event"]["longitude"],
-        "affected_radius_km": state["research"]["affected_radius_km"]
-    }
-
-    state["occupancy"] = agent3.run(agent3_input)
-
-    state["risk"] = agent4.assess_risk(
-        state["event"],
-        state["research"],
-        state["occupancy"]
-    )
-    state = agent5.run(state)
-
-    agent6 = ReportAgent(state)
-
-    agent6.generate_executive_summary()
-    agent6.generate_technical_report()
-    agent6.generate_news_report()
-    agent6.generate_video_script()
-
-    agent6.save_reports()
-
+    if state is None:
+        print("No actionable event found (filtered or deduplicated).")
+        return
 
     print("\n========== EXECUTIVE SUMMARY ==========\n")
-    print(agent6.executive_summary)
+    print(state.get("reports", {}).get("executive_summary", "N/A"))
 
     print("\n========== TECHNICAL REPORT ==========\n")
-    print(agent6.technical_report)
+    print(state.get("reports", {}).get("technical_report", "N/A"))
 
     print("\n========== NEWS REPORT ==========\n")
-    print(agent6.news_report)
+    print(state.get("reports", {}).get("news_report", "N/A"))
 
     print("\n========== VIDEO SCRIPT ==========\n")
-    print(agent6.video_script)
+    print(state.get("reports", {}).get("video_script", "N/A"))
+
+
+def run_mqtt_mode():
+    """Event-driven mode: listen for MQTT alerts and trigger pipeline."""
+    from services.mqtt_listener import ShakeAlertMQTTListener
+    from services.alert_store import create_alert_store
+
+    print("Starting Emergency Intelligence Pipeline (MQTT mode)...")
+
+    if not is_mqtt_enabled():
+        print("ERROR: MQTT credentials not configured in .env")
+        print("Set MQTT_USERNAME and MQTT_PASSWORD to enable MQTT mode.")
+        sys.exit(1)
+
+    # Create alert store (DynamoDB or local fallback)
+    alert_store = create_alert_store()
+
+    # Create orchestrator
+    orchestrator = PipelineOrchestrator()
+
+    # Create MQTT listener
+    listener = ShakeAlertMQTTListener(
+        on_alert_callback=orchestrator.handle_mqtt_alert,
+        on_store_callback=alert_store.save_alert,
+    )
+
+    listener.start()
+
+    print("MQTT listener running. Press Ctrl+C to stop.")
+    print(f"Broker: {listener.get_status()['broker']}")
+    print(f"Topic: {listener.get_status()['topic']}")
+
+    try:
+        import time
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nStopping...")
+        listener.stop()
+        print("Done.")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="AgenticAI Glocol — Emergency Intelligence Pipeline"
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["poll", "mqtt"],
+        default="poll",
+        help="Execution mode: 'poll' for one-shot USGS polling, 'mqtt' for real-time ShakeAlert (default: poll)",
+    )
+    parser.add_argument(
+        "--source",
+        choices=["USGS", "CAP"],
+        default="USGS",
+        help="Data source for poll mode (default: USGS)",
+    )
+
+    args = parser.parse_args()
+
+    if args.mode == "mqtt":
+        run_mqtt_mode()
+    else:
+        run_poll_mode(source=args.source)
+
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,9 @@
 import json
 from urllib import response
 import requests
-from typing import Dict, Any
+from typing import Dict, Any, Optional
+
+from config import MAGNITUDE_THRESHOLD
 
 """
 Agent 1
@@ -91,7 +93,7 @@ class Agent1Ingestion:
 
         return event
 
-    def process(self, payload: Dict[str, Any]=None,source:str=None) -> Dict[str, Any]:
+    def process(self, payload: Dict[str, Any]=None,source:str=None) -> Optional[Dict[str, Any]]:
         if payload is None:
 
             if source == "USGS":
@@ -103,10 +105,23 @@ class Agent1Ingestion:
             elif source == "FEMA":
                 payload = self.fetch_fema()
 
+            elif source == "MQTT":
+                raise ValueError("MQTT source requires a payload. Use fetch_mqtt() to build one.")
+
             else:
                 raise ValueError("Provide either payload or source.")
 
         self.validate_payload(payload)
+
+        # Magnitude threshold filter — discard events below threshold or without magnitude
+        magnitude = payload.get("magnitude")
+        if magnitude is None:
+            print("[Agent 1] Event missing magnitude — discarding.")
+            return None
+            
+        if magnitude < MAGNITUDE_THRESHOLD:
+            print(f"[Agent 1] Event M{magnitude} below threshold {MAGNITUDE_THRESHOLD} — discarding.")
+            return None
 
         event = self.normalize_event(payload)
 
@@ -116,6 +131,28 @@ class Agent1Ingestion:
                 "agent": self.agent_name,
                 "source": payload.get("source", "Unknown")
             }
+        }
+
+    def fetch_mqtt(self, alert_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Accepts pre-parsed MQTT ShakeAlert fields and converts
+        them into the common ingestion payload format.
+
+        Expected alert_data keys: orig_time, magnitude, latitude, longitude, depth, version
+        """
+        orig_time = alert_data.get("orig_time", "UNKNOWN")
+        magnitude = alert_data.get("magnitude")
+        latitude = alert_data.get("latitude")
+        longitude = alert_data.get("longitude")
+
+        return {
+            "source": "MQTT_ShakeAlert",
+            "event_id": f"SA_{orig_time}",
+            "event_type": "earthquake",
+            "magnitude": magnitude,
+            "latitude": latitude,
+            "longitude": longitude,
+            "location": f"({latitude}, {longitude})",
         }
     def fetch_usgs(self) -> Dict[str, Any]:
 

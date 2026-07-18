@@ -1,0 +1,63 @@
+TITLE
+EMERGENCY BRIEFING: ALASKA EARTHQUAKE
+
+SCENE 1
+Duration: 15 seconds
+Visual: Emergency broadcast overlay with a solemn yet calm background. Fades to a map highlighting the area of Portage Creek, Alaska.
+Voiceover: "Good evening. This is an emergency broadcast regarding a recent seismic event. At [Current Time], an earthquake with a magnitude of 1.5 was recorded approximately 6 kilometers south of Portage Creek, Alaska. The severity of this event has been assessed as LOW. Earthquake intensity information is currently unavailable."
+On-screen Text:
+EMERGENCY ALERT
+EARTHQUAKE: 6 km S of Portage Creek, AK
+Magnitude: 1.5
+Severity: LOW
+
+SCENE 2
+Duration: 20 seconds
+Visual: Animated graphic showing a 5 km radius around the epicenter on the map. Then transitions to a data overlay showing infrastructure counts.
+Voiceover: "The immediate affected radius is estimated at 5 kilometers. Within this zone, no major critical infrastructure, including schools, hospitals, or transit stations, has been identified. Initial reports indicate no significant damage within the immediate vicinity of the epicenter."
+On-screen Text:
+Affected Radius: 5 km
+No Critical Infrastructure Identified
+(Schools, Hospitals, Transit Stations: 0)
+
+SCENE 3
+Duration: 20 seconds
+Visual: Graphic displaying population statistics. Transitions to a graphic indicating "Live Occupancy Unavailable" with a "No Sensors" icon.
+Voiceover: "Within the broader region potentially impacted by this event, an estimated resident population of 27,488 has been identified. Regarding live occupancy, there are no PeopleSense sensors available within the affected area. Therefore, real-time live occupancy information for the immediate vicinity could not be determined."
+On-screen Text:
+Estimated Affected Population: 27,488 (Broader Area)
+Live Occupancy: UNAVAILABLE
+(No PeopleSense Sensors in Affected Area)
+
+SCENE 4
+Duration: 20 seconds
+Visual: Risk assessment graphic showing "LOW" status. Then animated graphic showing arrows indicating potential flow towards exits within a building layout.
+Voiceover: "The current risk assessment for this earthquake event remains LOW, with zero estimated people at immediate risk. The priority area status is currently unknown. Our intelligence pipeline predicts potential congestion hotspots, primarily at main building exits, primary stairwells, and corridors leading to exits, within a 60-minute window, with medium confidence."
+On-screen Text:
+Current Risk Level: LOW
+Estimated People At Risk: 0
+Predicted Congestion Hotspots:
+- Main building exits
+- Primary stairwells
+- Corridors leading to exits
+Time Window: 60 minutes
+
+SCENE 5
+Duration: 20 seconds
+Visual: Graphic of emergency services personnel and equipment. Followed by simple, clear safety icons (e.g., check for damage, stay calm).
+Voiceover: "Emergency services are aware and are monitoring the situation closely. Authorities are assessing for any unforeseen impacts across the region. As a safety recommendation for those in the affected area, please remain calm, check for any minor damage to your property, and be prepared to follow any guidance from local authorities."
+On-screen Text:
+Authorities Monitoring
+Safety Recommendations:
+- Stay Calm
+- Check for Minor Damage
+- Follow Local Guidance
+
+SCENE 6
+Duration: 15 seconds
+Visual: Emergency broadcast closing graphic with official information sources.
+Voiceover: "We reiterate that this was a low-severity seismic event, and continuous monitoring is underway. Please stay informed through official channels for any further updates. Your safety remains our top priority."
+On-screen Text:
+EMERGENCY BRIEFING COMPLETE
+Stay Informed | Stay Safe
+[Local Emergency Management Logos/Website]

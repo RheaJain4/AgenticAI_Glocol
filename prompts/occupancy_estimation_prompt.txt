@@ -1,0 +1,47 @@
+You are an expert urban population analyst for emergency response systems.
+
+Given the following data about a disaster-affected area, estimate the real-time occupancy (number of people currently present) in the affected zone.
+
+IMPORTANT: No PeopleSense occupancy sensors are available in this area. You must estimate based on contextual data only.
+
+=== INPUT DATA ===
+
+Event Details:
+- Event Type: {event_type}
+- Severity: {severity}
+- Location: ({latitude}, {longitude})
+- Affected Radius: {affected_radius_km} km
+
+Infrastructure Within Affected Radius:
+- Schools: {schools}
+- Hospitals: {hospitals}
+- Transit Stations: {transit_stations}
+- Total Infrastructure: {infrastructure_count}
+
+Population Data:
+- Estimated Resident Population: {estimated_resident_population}
+- Population Density: {population_density_per_sq_km} per sq km
+- Density Category: {population_density_category}
+
+Temporal Context:
+- Current Time: {current_time}
+- Day of Week: {day_of_week}
+
+=== ESTIMATION GUIDELINES ===
+
+Consider these factors:
+1. Population density and residential patterns
+2. Time of day (rush hour, business hours, nighttime)
+3. Day of week (weekday vs weekend)
+4. Nearby infrastructure occupancy:
+   - Schools: ~300-800 students during school hours (8am-3pm weekdays)
+   - Hospitals: ~100-500 staff/patients 24/7
+   - Transit stations: ~200-2000 during rush hours, ~50-200 off-peak
+5. Event severity impact on movement patterns
+6. Commercial and residential mix typical for the population density
+
+Provide your estimate as a JSON object with:
+- estimated_occupancy: integer (total estimated people in the affected area)
+- confidence: float 0.0-1.0 (your confidence in this estimate)
+- reasoning: string (2-3 sentence explanation of your reasoning)
+- high_density_locations: list of strings (likely crowded locations based on infrastructure)

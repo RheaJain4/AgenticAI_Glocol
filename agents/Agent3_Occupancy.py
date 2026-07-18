@@ -196,6 +196,163 @@ class OccupancyAgent:
         return total_population, high_density_zones
 
     # ------------------------------------------------------------------
+    # Sensorless Estimation Fallback
+    # ------------------------------------------------------------------
+    def _estimate_without_sensors(
+        self, research_output: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Estimate occupancy when no PeopleSense sensors are within range.
+
+        Uses a layered approach:
+        1. Population density baseline from Agent 2
+        2. Infrastructure proximity multipliers
+        3. Time-of-day adjustment
+        4. LLM contextual refinement (Gemini)
+
+        Returns the same schema as the sensor path, plus estimation metadata.
+        """
+        from datetime import datetime
+        import json as _json
+        from pathlib import Path
+
+        research = research_output.get("research", {})
+        event = research_output.get("event", {})
+
+        # --- Layer 1: Population density baseline ---
+        resident_pop = research.get("estimated_resident_population", 0)
+        density_category = research.get("population_density_category", "MEDIUM")
+        density_per_sq_km = research.get("population_density_per_sq_km", 350)
+
+        # --- Layer 2: Infrastructure proximity scoring ---
+        schools = research.get("schools", 0)
+        hospitals = research.get("hospitals", 0)
+        transit_stations = research.get("transit_stations", 0)
+        infrastructure_count = research.get("infrastructure_count", 0)
+
+        now = datetime.now()
+        hour = now.hour
+        is_weekday = now.weekday() < 5
+        day_name = now.strftime("%A")
+        time_str = now.strftime("%H:%M")
+
+        # School occupancy: ~500 avg during school hours
+        school_pop = 0
+        if is_weekday and 8 <= hour <= 15:
+            school_pop = schools * 500
+
+        # Hospital occupancy: ~200 avg, 24/7
+        hospital_pop = hospitals * 200
+
+        # Transit: rush hour vs off-peak
+        transit_pop = 0
+        if 7 <= hour <= 9 or 17 <= hour <= 19:
+            transit_pop = transit_stations * 1000  # Rush hour
+        elif 6 <= hour <= 22:
+            transit_pop = transit_stations * 200   # Daytime off-peak
+        else:
+            transit_pop = transit_stations * 50    # Night
+
+        infrastructure_estimate = school_pop + hospital_pop + transit_pop
+
+        # --- Layer 3: Time-of-day multiplier on residential population ---
+        if 7 <= hour <= 9 or 17 <= hour <= 19:
+            time_multiplier = 0.4  # Many people commuting, fewer at home
+        elif 9 <= hour <= 17:
+            time_multiplier = 0.3  # Most at work/school
+        elif 22 <= hour or hour <= 6:
+            time_multiplier = 0.9  # Most at home/sleeping
+        else:
+            time_multiplier = 0.6  # Evening, mixed
+
+        residential_present = int(resident_pop * time_multiplier)
+        rule_based_estimate = residential_present + infrastructure_estimate
+
+        # --- Layer 4: LLM contextual refinement ---
+        estimated_population = rule_based_estimate
+        confidence = 0.5
+        high_density_zones: List[str] = []
+        estimation_factors = ["population_density", "infrastructure_proximity", "time_of_day"]
+
+        try:
+            from utils.llm import generate_json as llm_generate_json
+
+            prompt_path = Path("prompts/occupancy_estimation_prompt.txt")
+            if prompt_path.exists():
+                template = prompt_path.read_text(encoding="utf-8")
+                prompt = template.format(
+                    event_type=event.get("event_type", "earthquake"),
+                    severity=event.get("severity", "MEDIUM"),
+                    latitude=research_output.get("latitude", 0),
+                    longitude=research_output.get("longitude", 0),
+                    affected_radius_km=research_output.get("affected_radius_km", 15),
+                    schools=schools,
+                    hospitals=hospitals,
+                    transit_stations=transit_stations,
+                    infrastructure_count=infrastructure_count,
+                    estimated_resident_population=resident_pop,
+                    population_density_per_sq_km=density_per_sq_km,
+                    population_density_category=density_category,
+                    current_time=time_str,
+                    day_of_week=day_name,
+                )
+
+                schema = {
+                    "type": "OBJECT",
+                    "properties": {
+                        "estimated_occupancy": {"type": "INTEGER"},
+                        "confidence": {"type": "NUMBER"},
+                        "reasoning": {"type": "STRING"},
+                        "high_density_locations": {
+                            "type": "ARRAY",
+                            "items": {"type": "STRING"},
+                        },
+                    },
+                    "required": [
+                        "estimated_occupancy",
+                        "confidence",
+                        "reasoning",
+                        "high_density_locations",
+                    ],
+                }
+
+                llm_response = llm_generate_json(prompt, schema)
+                if llm_response:
+                    llm_data = _json.loads(llm_response)
+                    estimated_population = int(llm_data.get("estimated_occupancy", rule_based_estimate))
+                    confidence = float(llm_data.get("confidence", 0.5))
+                    high_density_zones = llm_data.get("high_density_locations", [])
+                    estimation_factors.append("llm_reasoning")
+                    logger.info(
+                        "LLM estimation: %d people, confidence %.2f",
+                        estimated_population, confidence,
+                    )
+
+        except Exception as e:
+            logger.warning("LLM estimation failed, using rule-based: %s", e)
+            # Fall back to rule-based estimate
+            estimated_population = rule_based_estimate
+            confidence = 0.4
+
+            # Generate high-density zones from infrastructure
+            if schools > 0 and is_weekday and 8 <= hour <= 15:
+                high_density_zones.append("School Zone (estimated)")
+            if hospitals > 0:
+                high_density_zones.append("Hospital Zone (estimated)")
+            if transit_stations > 0 and (7 <= hour <= 9 or 17 <= hour <= 19):
+                high_density_zones.append("Transit Hub (estimated)")
+
+        return {
+            "event_id": research_output.get("event_id", "UNKNOWN"),
+            "estimated_population": max(estimated_population, 0),
+            "high_density_zones": high_density_zones,
+            "sensor_count": 0,
+            "estimation_method": "estimated",
+            "confidence_score": round(confidence, 2),
+            "estimation_factors": estimation_factors,
+        }
+
+    # ------------------------------------------------------------------
     # Public entry point
     # ------------------------------------------------------------------
     def run(self, research_output: Dict[str, Any]) -> Dict[str, Any]:
@@ -214,11 +371,15 @@ class OccupancyAgent:
         We accept them here directly so the pipeline can pass the merged
         event dict without schema breakage.
 
-        Output (strict — do NOT change without coordinating with Agent 4):
+        Output schema:
         {
             "event_id": str,
             "estimated_population": int,
-            "high_density_zones": [str, ...]
+            "high_density_zones": [str, ...],
+            "sensor_count": int,
+            "estimation_method": "sensor" | "estimated",
+            "confidence_score": float (0.0-1.0),
+            "estimation_factors": [str, ...]
         }
         """
         event_id: str = research_output.get("event_id", "UNKNOWN")
@@ -255,12 +416,24 @@ class OccupancyAgent:
             estimated_population, high_density_zones,
         )
 
-        # 4. Return — exact schema required by Agent 4
+        sensor_count = len(nearby)
+
+        # 4. If no sensors found, use estimation fallback
+        if sensor_count == 0:
+            logger.info(
+                "No PeopleSense sensors in range — using sensorless estimation."
+            )
+            return self._estimate_without_sensors(research_output)
+
+        # 5. Return sensor-based data with full schema
         return {
             "event_id": event_id,
             "estimated_population": estimated_population,
             "high_density_zones": high_density_zones,
-            "sensor_count": len(nearby)
+            "sensor_count": sensor_count,
+            "estimation_method": "sensor",
+            "confidence_score": 1.0,
+            "estimation_factors": ["peoplesense_sensors"],
         }
 
 

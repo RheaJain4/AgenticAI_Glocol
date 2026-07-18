@@ -1,5 +1,9 @@
 {
-  "event_id": "string",
-  "estimated_population": "number (total people counted in affected radius)",
-  "high_density_zones": ["string (zone label — 'LocationID (PlaceID)' or 'GroupID (PlaceID)')"]
+    "event_id": "string",
+    "estimated_population": "integer",
+    "high_density_zones": ["string"],
+    "sensor_count": "integer",
+    "estimation_method": "sensor | estimated",
+    "confidence_score": "number (0.0-1.0)",
+    "estimation_factors": ["string"]
 }

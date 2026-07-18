@@ -14,6 +14,7 @@ class ReportAgent:
         self.news_report = ""
         self.executive_summary = ""
         self.video_script = ""
+        self.broadcast_script = ""
         self.report_directory = Path("reports") #path to the directory where reports will be saved
 
 
@@ -95,6 +96,44 @@ class ReportAgent:
 
 #--------------------------------------------------------------------------------  
 
+    def generate_broadcast_script(self):
+        """
+        Generate a TTS-optimized broadcast script for HeyGen video generation.
+        This is plain spoken narration without scene descriptions.
+        """
+        print("\nGenerating broadcast script...")
+        prompt_file = Path("prompts/broadcast_script_prompt.txt")
+        prompt = self.build_prompt(prompt_file)
+        response = generate_text(prompt)
+        self.broadcast_script = response.strip()
+        print("\nBroadcast script generated successfully!")
+        return self.broadcast_script
+
+#--------------------------------------------------------------------------------  
+
+    def generate_video(self):
+        """
+        Generate an AI video using HeyGen from the broadcast script.
+        In stub mode, saves the script as a text file.
+        """
+        from services.heygen_client import HeyGenClient
+
+        if not self.broadcast_script:
+            self.generate_broadcast_script()
+
+        event_id = self.input_data.get("event", {}).get("event_id", "UNKNOWN")
+        output_dir = str(self.report_directory / event_id)
+
+        client = HeyGenClient()
+        result = client.generate_and_save(
+            script=self.broadcast_script,
+            output_dir=output_dir,
+        )
+        print(f"\nVideo generation result: {result.get('status', 'unknown')}")
+        return result
+
+#--------------------------------------------------------------------------------
+
     def build_context(self):
 
         context = f"""
@@ -163,6 +202,12 @@ END OF PIPELINE OUTPUT
         with open(event_folder / "video_script.txt", "w", encoding="utf-8") as file:
             file.write(self.video_script)
 
+        # Save broadcast script if generated
+        if self.broadcast_script:
+            with open(event_folder / "broadcast_script.txt", "w", encoding="utf-8") as file:
+                file.write(self.broadcast_script)
+
         print("\nReports saved successfully.")
 #--------------------------------------------------------------------------------
     
+

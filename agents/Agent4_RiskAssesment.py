@@ -156,6 +156,14 @@ class RiskAssessmentAgent:
             infrastructure_score,
         )
 
+        # Factor in occupancy confidence — low confidence widens uncertainty
+        confidence_score = occupancy.get("confidence_score", 1.0)
+        estimation_method = occupancy.get("estimation_method", "sensor")
+
+        if confidence_score < 0.7:
+            # Apply ±15% uncertainty band — use the higher end for safety
+            risk_score = min(round(risk_score * 1.15, 2), 100.0)
+
         risk_level = self.determine_risk_level(risk_score)
 
         high_density = occupancy.get("high_density_zones", [])
@@ -189,4 +197,6 @@ class RiskAssessmentAgent:
             "priority_area": priority_area,
             "estimated_people_at_risk": estimated_people_at_risk,
             "risk_score": risk_score,
+            "data_quality": estimation_method,
+            "occupancy_confidence": confidence_score,
         }

@@ -1,0 +1,126 @@
+**Emergency Intelligence Platform - Emergency Broadcast Briefing**
+
+---
+
+**Scene 1: Opening Emergency Alert**
+
+*   **Duration:** 6 seconds
+*   **Visual Description:** Full-screen emergency broadcast overlay. A stark, red alert banner flashes across the top and bottom of the screen.
+*   **Camera Direction:** Static shot, centered.
+*   **On-screen Graphics:** Large, bold text: "EMERGENCY ALERT SYSTEM ACTIVATED" and "IMMEDIATE BROADCAST"
+*   **Voiceover:** (Urgent, authoritative, calm tone) "We interrupt this programming for an emergency broadcast from the Emergency Intelligence Platform."
+*   **Transition:** Quick cut to map.
+*   **Background Audio:** Short, sharp emergency tone, then fading into low, continuous, urgent synth underscore.
+
+---
+
+**Scene 2: Map Animation Showing the Event**
+
+*   **Duration:** 18 seconds
+*   **Visual Description:** A detailed satellite map of West Texas, gradually zooming in. A pinpoint icon flashes at 31.651, -104.239, labeled "56 km NW of Toyah, Texas". Animated concentric rings visually represent the 5km affected radius.
+*   **Camera Direction:** Zooming in, then slowly panning over the affected area.
+*   **On-screen Graphics:**
+    *   Event Type: EARTHQUAKE
+    *   Magnitude: 1.7
+    *   Severity: LOW
+    *   Affected Radius: 5.0 km
+*   **Voiceover:** "At [current time, e.g., 10:30 AM CDT], an earthquake of magnitude 1.7, classified as LOW severity, has been detected 56 kilometers northwest of Toyah, Texas. Intensity data for this event is currently unavailable. The affected radius is approximately 5 kilometers from the epicenter."
+*   **Transition:** Dissolve to infographic.
+*   **Background Audio:** Urgent synth underscore continues, with subtle, low-frequency rumble sound effect for earthquake animation.
+
+---
+
+**Scene 3: Infrastructure Overview**
+
+*   **Duration:** 12 seconds
+*   **Visual Description:** Infographic displaying key statistics. Icons for schools, hospitals, and transit stations show "0" next to them. A bar graph indicates population density.
+*   **Camera Direction:** Static shot on infographic.
+*   **On-screen Graphics:**
+    *   Schools: 0
+    *   Hospitals: 0
+    *   Transit Stations: 0
+    *   Estimated Resident Population: 27,488
+    *   Population Density: MEDIUM (349.99 per sq km)
+*   **Voiceover:** "Our research indicates no schools, hospitals, or major transit stations within the immediate 5-kilometer affected zone. The estimated resident population for this area is 27,488, characterized by a medium population density."
+*   **Transition:** Fade to visual representation of residential areas.
+*   **Background Audio:** Synth underscore continues, slightly more subdued.
+
+---
+
+**Scene 4: PeopleSense Live Occupancy Assessment**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** A stylized map showing generic residential blocks and a few local commercial buildings. Areas identified as 'high-density zones' are highlighted with a pulsing orange glow.
+*   **Camera Direction:** Slow pan across the highlighted areas.
+*   **On-screen Graphics:**
+    *   PeopleSense Sensors: UNAVAILABLE (0 detected)
+    *   Estimated Current Population: 25,289
+    *   High-Density Zones (Estimated): Residential areas, Local commercial zones
+*   **Voiceover:** "Due to the absence of PeopleSense sensors within this specific affected area, real-time occupancy data from these sensors is unavailable. However, based on combined intelligence from various factors, the estimated current population is 25,289. Estimated high-density locations include residential areas and local commercial zones."
+*   **Transition:** Quick cut to risk assessment overlay.
+*   **Background Audio:** Synth underscore continues, with a subtle digital hum indicating data processing.
+
+---
+
+**Scene 5: Risk Assessment**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** An animated 'Risk Meter' graphic, with a needle firmly in the "HIGH" zone. Overlayed on a map highlighting residential areas in red.
+*   **Camera Direction:** Static shot on risk meter, then subtle zoom on priority area.
+*   **On-screen Graphics:**
+    *   Risk Level: HIGH
+    *   Priority Area: Residential areas
+    *   Estimated People at Risk: 15,173
+*   **Voiceover:** "Our risk assessment agent identifies a HIGH risk level for the affected area, with residential areas designated as the primary priority. An estimated 15,173 people are assessed to be at risk, considering the low hazard severity combined with estimated population density."
+*   **Transition:** Wipe to crowd prediction map.
+*   **Background Audio:** Synth underscore gains a slightly more tense tone.
+
+---
+
+**Scene 6: Crowd Surge Prediction**
+
+*   **Duration:** 15 seconds
+*   **Visual Description:** A stylized map of residential streets. Animated red arrows show predicted movement, converging on "predicted hotspots" which are highlighted.
+*   **Camera Direction:** Pan and zoom to focus on predicted hotspots.
+*   **On-screen Graphics:**
+    *   Predicted Hotspots: Exits of residential buildings, Local streets within residential areas, Intersections
+    *   Estimated Congestion Probability: 75%
+    *   Prediction Confidence: MEDIUM
+    *   Time Window: Next 60 minutes
+*   **Voiceover:** "Crowd surge prediction indicates a medium confidence of potential congestion hotspots within the next 60 minutes. These estimated hotspots include exits of residential buildings, local streets within residential areas, and intersections connecting to main thoroughfares. The estimated probability of congestion is 75%."
+*   **Transition:** Fade to text-based safety recommendations.
+*   **Background Audio:** Synth underscore maintains tension, with a subtle, pulsating beat.
+
+---
+
+**Scene 7: Public Safety Recommendations**
+
+*   **Duration:** 10 seconds
+*   **Visual Description:** Clear, concise text recommendations on a dark, professional background.
+*   **Camera Direction:** Static shot.
+*   **On-screen Graphics:**
+    *   **PUBLIC SAFETY RECOMMENDATIONS:**
+    *   1. Remain Calm.
+    *   2. Assess your immediate surroundings for hazards.
+    *   3. If safe, avoid predicted congestion hotspots.
+    *   4. Follow local authority guidelines.
+*   **Voiceover:** "We advise all residents within the affected and surrounding areas to remain calm, assess your immediate surroundings for any hazards, and if safe to do so, avoid the predicted congestion hotspots. Please follow all guidelines issued by local authorities."
+*   **Transition:** Cross-dissolve to closing screen.
+*   **Background Audio:** Synth underscore becomes slightly more reassuring.
+
+---
+
+**Scene 8: Closing Statement**
+
+*   **Duration:** 9 seconds
+*   **Visual Description:** Emergency Intelligence Platform logo centered on screen, with a subtle digital ripple effect.
+*   **Camera Direction:** Static shot, centered.
+*   **On-screen Graphics:**
+    *   "Emergency Intelligence Platform"
+    *   "Monitoring the situation."
+    *   "Stay tuned for updates."
+*   **Voiceover:** "The Emergency Intelligence Platform will continue to monitor the situation closely and provide further updates as they become available. Please stay tuned to this channel for additional information and instructions. This concludes our emergency briefing."
+*   **Transition:** Fade to black.
+*   **Background Audio:** Synth underscore fades out slowly.
+
+---

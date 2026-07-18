@@ -1,0 +1,7 @@
+A minor earthquake measuring magnitude 1.5 occurred approximately 6 kilometers south of Portage Creek, Alaska. Information regarding the earthquake's intensity is currently unavailable. The event's severity has been assessed as LOW.
+
+The directly affected area extends to a radius of 5.0 kilometers around the epicenter. Emergency assessments indicate that no schools, hospitals, transit stations, or critical infrastructure are located within this immediate impact zone. The low severity of the earthquake contributes to an overall low-risk assessment, with current estimates indicating zero people directly at risk. While the broader region maintains an estimated resident population of 27,488, with a medium population density of approximately 350 people per square kilometer, the immediate impact from this event is considered minimal.
+
+For public safety, there is a predicted 60% probability of congestion occurring at main building exits, primary stairwells, and corridors leading to exits within a 60-minute window following the tremor. Residents in the vicinity are advised to be mindful of these potential temporary choke points should they need to evacuate or move within buildings.
+
+Regarding live occupancy data, no PeopleSense sensors are available within the affected area, meaning live occupancy could not be determined at this time.

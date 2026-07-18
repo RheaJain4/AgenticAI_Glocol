@@ -1,0 +1,7 @@
+**Executive Summary: Operational Situation Report - Earthquake (aka2026nnohxo)**
+
+An earthquake of magnitude 1.5 has occurred 6 km S of Portage Creek, Alaska, registering a low severity level. The directly affected radius spans approximately 5.0 km, with no critical infrastructure, schools, or hospitals identified within this zone.
+
+Operationally, this event is significant primarily due to the potential for localized public concern despite the low magnitude and the absence of immediate physical impact. Overall risk assessment indicates a low risk level, with zero people estimated to be at immediate risk. Live occupancy within the affected area could not be determined as no PeopleSense sensors are available.
+
+Despite the low direct impact, AI modeling predicts potential for localized crowd congestion, with a 60% probability within 60 minutes, specifically in main building exits, primary stairwells, and corridors leading to exits. This indicates a potential for minor disruption in immediately adjacent populated areas. There is no information regarding large-scale crowd movement or external congestion. The primary uncertainty remains the real-time occupancy and specific public response in areas potentially experiencing ground motion.

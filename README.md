@@ -10,323 +10,129 @@ The project was developed as part of the **Practice School-I internship at Gloco
 
 During an emergency, responders often need to gather information from multiple independent sources before making decisions.
 
-This project automates that workflow using six specialized AI agents that collaborate through a shared JSON state.
+This project automates that workflow using six specialized AI agents that collaborate through a shared JSON state. The system features a centralized **Pipeline Orchestrator** to handle source selection, message deduplication, and pipeline tracking.
 
 Instead of relying on a single large prompt, every agent performs one well-defined task and passes structured information to the next agent, making the pipeline modular, explainable, and extensible.
+
+---
+
+## New Features (v2.0)
+
+1. **Event-driven MQTT ShakeAlert Integration**: Automatically ingests live USGS ShakeAlert messages via MQTT and persists them to DynamoDB.
+2. **Real-time React Dashboard**: A modern, glassmorphism UI built with Vite/React that visualizes live pipeline progress, event coordinates, occupancy, and risk scores via WebSockets.
+3. **Sensorless Occupancy Fallback**: Uses LLM-based estimation using infrastructure, population density, and time-of-day proxies when live PeopleSense sensors are unavailable.
+4. **HeyGen AI Video Integration**: Agent 6 now generates broadcast-ready TTS scripts that can be seamlessly passed to HeyGen for AI avatar video generation.
+5. **Enhanced Orchestrator**: Gracefully handles API filtering, deduplicates identical alerts, and broadcasts granular progress updates.
 
 ---
 
 ## System Architecture
 
 ```
-              USGS / CAP Alerts
-                     │
-                     ▼
-         Agent 1 ─ Emergency Alert Ingestion
-                     │
-                     ▼
-      Agent 2 ─ Geographic Research Agent
-                     │
-                     ▼
-      Agent 3 ─ Occupancy Intelligence Agent
-                     │
-                     ▼
-       Agent 4 ─ Risk Assessment Agent
-                     │
-                     ▼
-    Agent 5 ─ Crowd Surge Prediction Agent
-                     │
-                     ▼
-      Agent 6 ─ Report Generation Agent
-                     │
-                     ▼
- Executive Summary
- Technical Report
- News Report
- Video Script
+        USGS REST / MQTT ShakeAlert
+                      │
+                      ▼
+          Agent 1 ─ Emergency Alert Ingestion
+                      │
+                      ▼
+       Agent 2 ─ Geographic Research Agent
+                      │
+                      ▼
+       Agent 3 ─ Occupancy Intelligence Agent (Sensor + Fallback)
+                      │
+                      ▼
+        Agent 4 ─ Risk Assessment Agent
+                      │
+                      ▼
+     Agent 5 ─ Crowd Surge Prediction Agent
+                      │
+                      ▼
+       Agent 6 ─ Report Generation Agent
+                      │
+                      ▼
+  Executive / Technical / News / Broadcast Scripts
 ```
 
 ---
 
-# Agents
+## Agents
 
-## Agent 1 — Emergency Alert Ingestion
+### Agent 1 — Emergency Alert Ingestion
+- Listens to MQTT ShakeAlerts or polls USGS.
+- Validates and normalizes alerts.
+- Discards minor events (magnitude < 4.5).
 
-Retrieves and normalizes emergency alerts from trusted sources.
+### Agent 2 — Geographic Research
+- Queries OpenStreetMap / Overpass API to discover nearby hospitals, schools, and transit stations.
+- Estimates baseline resident population.
 
-### Responsibilities
+### Agent 3 — Occupancy Intelligence
+- Retrieves live sensor information from the PeopleSense API.
+- If sensors are missing or offline, dynamically switches to a context-aware **LLM estimation fallback** to predict human occupancy, providing a confidence score.
 
-- Fetch live earthquake alerts from USGS
-- Support CAP-compatible alerts
-- Validate incoming payloads
-- Normalize heterogeneous alert formats
-- Assign severity levels
-- Produce a common event schema
+### Agent 4 — Risk Assessment
+- Combines hazard severity, population, and infrastructure.
+- Computes an operational risk score (0-100) and risk level.
 
-### Output
+### Agent 5 — Crowd Surge Prediction
+- Predicts likely crowd movement following the emergency.
+- Outputs congestion hotspots and probabilities.
 
-```json
-{
-  "event": {
-      "event_id": "...",
-      "magnitude": 6.1,
-      "latitude": ...,
-      "longitude": ...,
-      "severity": "HIGH"
-  }
-}
-```
+### Agent 6 — Report Generation
+- Combines outputs of all agents into structured natural-language reports.
+- Generates: Executive Summary, Technical Report, News Report, Video Script, and a TTS-optimized Broadcast Script.
 
 ---
 
-## Agent 2 — Geographic Research
-
-Enriches the event with geographic context using OpenStreetMap.
-
-### Responsibilities
-
-- Query Overpass API
-- Discover nearby hospitals
-- Schools
-- Transit stations
-- Critical infrastructure
-- Estimate affected radius
-- Estimate resident population
-
----
-
-## Agent 3 — Occupancy Intelligence
-
-Uses the PeopleSense Occupancy API to estimate real-time human occupancy.
-
-### Responsibilities
-
-- Retrieve live sensor information
-- Filter sensors within the affected radius
-- Estimate occupancy
-- Identify high-density zones
-
-Example output
-
-```json
-{
-    "estimated_population": 3125,
-    "high_density_zones": [
-        "University Union",
-        "Library"
-    ]
-}
-```
-
----
-
-## Agent 4 — Risk Assessment
-
-Combines information from previous agents to estimate operational risk.
-
-### Inputs
-
-- Hazard severity
-- Population
-- Occupancy
-- Infrastructure
-
-### Outputs
-
-- Risk score
-- Risk level
-- Priority area
-- Estimated people at risk
-
----
-
-## Agent 5 — Crowd Surge Prediction
-
-Predicts likely crowd movement following the emergency.
-
-Uses
-
-- Occupancy estimates
-- Risk score
-- High-density locations
-- Gemini reasoning
-
-Outputs
-
-- Congestion hotspots
-- Prediction confidence
-- Congestion probability
-- Prediction window
-
----
-
-## Agent 6 — Report Generation
-
-Agent 6 combines the outputs of all previous agents into structured natural-language reports.
-
-Generated reports include
-
-- Executive Summary
-- Technical Report
-- News Report
-- Emergency Video Script
-
-Rather than sending raw event data directly to the LLM, Agent 6 constructs a comprehensive prompt containing the complete emergency context, ensuring accurate and consistent report generation.
-
----
-
-# Project Structure
+## Project Structure
 
 ```
 AgenticAI_Glocol/
-
-│
-├── agents/
-│   ├── Agent1_Ingestion.py
-│   ├── Agent2_Research.py
-│   ├── Agent3_Occupancy.py
-│   ├── Agent4_RiskAssessment.py
-│   ├── Agent5_CrowdSurgePrediction.py
-│   └── Agent6_Report.py
-│
-├── prompts/
-│   ├── executive_summary.txt
-│   ├── technical_report.txt
-│   ├── news_report.txt
-│   └── video_script.txt
-│
-├── reports/
-│
-├── utils/
-│
-├── main.py
-│
-└── README.md
+├── agents/            # 6 AI Agents
+├── api/               # FastAPI Backend & WebSockets
+├── frontend/          # Vite/React Real-time Dashboard
+├── prompts/           # LLM Instruction Templates
+├── reports/           # Generated pipeline outputs
+├── schemas/           # Agent JSON I/O validation schemas
+├── services/          # MQTT listener, HeyGen Client, DynamoDB Store
+├── tests/             # Pytest Suites (MQTT, Occupancy, etc.)
+├── orchestrator.py    # Pipeline Orchestration logic
+├── config.py          # Centralized configuration
+└── main.py            # CLI Entrypoint
 ```
 
 ---
 
-# Technologies Used
+## Running the Project
 
-- Python
-- Google Gemini 2.5 Flash
-- PeopleSense Occupancy API
-- USGS Earthquake API
-- OpenStreetMap
-- Overpass API
-- JSON
-- Git
+1. **Clone and Install**
+   ```bash
+   git clone https://github.com/RheaJain4/AgenticAI_Glocol.git
+   pip install -r requirements.txt
+   cd frontend && npm install
+   ```
 
----
+2. **Environment Variables**
+   Create a `.env` file in the root (see `.env.example` for details) and add your API keys:
+   ```env
+   AWS_ACCESS_KEY_ID=AKIA...
+   AWS_SECRET_ACCESS_KEY=...
+   GEMINI_API_KEY=...
+   ```
 
-# Data Sources
+3. **Running the Dashboard (Frontend + Backend)**
+   You need two terminal windows:
+   ```bash
+   # Terminal 1: Start the FastAPI backend
+   python -m api.server
+   
+   # Terminal 2: Start the React frontend
+   cd frontend && npm run dev
+   ```
+   Open `http://localhost:5173` to view the dashboard.
 
-| Source | Purpose |
-|---------|----------|
-| USGS | Live earthquake alerts |
-| OpenStreetMap | Geographic information |
-| Overpass API | Infrastructure discovery |
-| PeopleSense API | Live occupancy estimation |
-| Gemini API | Report generation & reasoning |
-
----
-
-# Running the Project
-
-Clone the repository
-
-```bash
-git clone https://github.com/RheaJain4/AgenticAI_Glocol.git
-```
-
-Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Set your environment variables
-
-```text
-GEMINI_API_KEY=YOUR_API_KEY
-PEOPLESENSE_API_KEY=YOUR_API_KEY
-```
-
-Run
-
-```bash
-python main.py
-```
-
----
-
-# Example Pipeline
-
-```
-USGS Alert
-      ↓
-
-Agent 1
-Normalize Event
-
-      ↓
-
-Agent 2
-Infrastructure Analysis
-
-      ↓
-
-Agent 3
-Live Occupancy
-
-      ↓
-
-Agent 4
-Risk Assessment
-
-      ↓
-
-Agent 5
-Crowd Prediction
-
-      ↓
-
-Agent 6
-Generate Reports
-```
-
----
-
-# Generated Outputs
-
-The pipeline automatically generates
-
-```
-reports/
-
-└── <event_id>/
-    ├── executive_summary.txt
-    ├── technical_report.txt
-    ├── news_report.txt
-    └── video_script.txt
-```
-
----
-
-# Future Improvements
-
-- Support FEMA integration
-- Multi-hazard support (floods, cyclones, wildfires)
-- Real-time dashboard
-- Shelter recommendation agent
-- Evacuation route optimization
-- Live traffic integration
-- Digital twin visualization
-- Historical event analytics
-
-
----
-
-# License
-
-This repository was developed as part of an academic internship project. Please contact the contributors before using the project for commercial purposes.
+4. **Running MQTT Background Mode**
+   To listen for live ShakeAlerts passively:
+   ```bash
+   python main.py --mode mqtt
+   ```
