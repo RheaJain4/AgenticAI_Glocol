@@ -114,10 +114,10 @@ class RiskAssessmentAgent:
         """
 
         score = (
-            (0.30 * severity_score)
-            + (0.25 * population_score)
+            (0.40 * severity_score)
+            + (0.20 * population_score)
             + (0.30 * occupancy_score)
-            + (0.15 * infrastructure_score)
+            + (0.10 * infrastructure_score)
         )
 
         return round(score, 2)
