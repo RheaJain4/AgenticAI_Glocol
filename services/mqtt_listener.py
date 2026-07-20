@@ -215,7 +215,7 @@ class ShakeAlertMQTTListener:
 
     def _on_disconnect(self, client, userdata, flags, rc, properties=None):
         if rc != 0:
-            logger.warning("Unexpected disconnect (rc=%d). Will auto-reconnect.", rc)
+            logger.warning("Unexpected disconnect (rc=%s). Will auto-reconnect.", rc)
 
     # ------------------------------------------------------------------
     # Watchdog

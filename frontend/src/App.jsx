@@ -5,9 +5,6 @@ import Header from './components/Header';
 import EventTimeline from './components/EventTimeline';
 import AlertHero from './components/AlertHero';
 import PipelineTracker from './components/PipelineTracker';
-import RiskGauge from './components/RiskGauge';
-import OccupancyPanel from './components/OccupancyPanel';
-import SurgeHotspots from './components/SurgeHotspots';
 import ReportTabs from './components/ReportTabs';
 import './App.css';
 
@@ -41,10 +38,16 @@ function App() {
       }
     } else if (lastMessage.type === 'pipeline_status') {
       setPipelineStatus(lastMessage.data);
-      // Refresh events list when pipeline completes
-      if (lastMessage.data.pipeline_state === 'completed') {
-        refreshEvents();
+    } else if (lastMessage.type === 'pipeline_completed') {
+      // Pipeline finished — set completed, then reset to idle after 3s
+      setPipelineStatus(prev => ({ ...prev, pipeline_state: 'completed', progress: 100 }));
+      refreshEvents();
+      if (lastMessage.data?.event_id) {
+        loadEventDetails(lastMessage.data.event_id);
       }
+      setTimeout(() => {
+        setPipelineStatus(prev => ({ ...prev, pipeline_state: 'idle', progress: 0, current_agent: null }));
+      }, 3000);
     }
   }, [lastMessage]);
 
@@ -106,15 +109,6 @@ function App() {
         <div className="dashboard-grid">
           <div className="dashboard-hero">
             <AlertHero event={selectedEvent} />
-          </div>
-          <div className="dashboard-metrics">
-            <RiskGauge
-              riskScore={selectedEvent?.risk?.risk_score}
-              riskLevel={selectedEvent?.risk?.risk_level}
-              dataQuality={selectedEvent?.risk?.data_quality}
-            />
-            <OccupancyPanel occupancy={selectedEvent?.occupancy} />
-            <SurgeHotspots surge={selectedEvent?.surge} />
           </div>
           <div className="dashboard-pipeline">
             <PipelineTracker status={pipelineStatus} />

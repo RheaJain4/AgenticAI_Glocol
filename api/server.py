@@ -35,6 +35,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.on_event("startup")
+async def _capture_loop():
+    global _event_loop
+    _event_loop = asyncio.get_event_loop()
+
 # ---------------------------------------------------------------------------
 # In-memory state (shared with orchestrator via callbacks)
 # ---------------------------------------------------------------------------
@@ -68,23 +74,19 @@ async def broadcast_to_clients(message: Dict[str, Any]):
     active_websockets.difference_update(disconnected)
 
 
+_event_loop = None  # Will be set on startup
+
 def on_pipeline_state_change(status: Dict[str, Any]):
-    """Callback for the orchestrator — bridges sync→async."""
+    """Callback for the orchestrator — bridges sync→async via thread-safe scheduling."""
     global pipeline_status
     pipeline_status = status
 
-    # If completed, store the result
-    # (The actual result is stored separately via store_result)
-
-    # Fire-and-forget async broadcast
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            asyncio.ensure_future(
-                broadcast_to_clients({"type": "pipeline_status", "data": status})
-            )
-    except RuntimeError:
-        pass
+    # Schedule async broadcast from the worker thread
+    if _event_loop and _event_loop.is_running():
+        asyncio.run_coroutine_threadsafe(
+            broadcast_to_clients({"type": "pipeline_status", "data": status}),
+            _event_loop,
+        )
 
 
 def store_pipeline_result(state: Dict[str, Any]):
@@ -190,18 +192,26 @@ async def get_event_reports(event_id: str):
 
 @app.post("/api/trigger")
 async def trigger_pipeline(body: dict = None):
-    """Manually trigger the pipeline."""
+    """Manually trigger the pipeline in a background thread for live updates."""
     source = (body or {}).get("source", "USGS")
 
     # Import here to avoid circular imports
     from orchestrator import PipelineOrchestrator
 
-    orchestrator = PipelineOrchestrator(on_state_change=on_pipeline_state_change)
+    def _run():
+        orchestrator = PipelineOrchestrator(on_state_change=on_pipeline_state_change)
+        return orchestrator.run_pipeline(source=source)
 
     try:
-        state = orchestrator.run_pipeline(source=source)
+        loop = asyncio.get_event_loop()
+        state = await loop.run_in_executor(None, _run)
         if state:
             store_pipeline_result(state)
+            # Broadcast completion with event data
+            await broadcast_to_clients({
+                "type": "pipeline_completed",
+                "data": {"event_id": state["event"]["event_id"]},
+            })
             return JSONResponse(content={
                 "status": "completed",
                 "event_id": state["event"]["event_id"],

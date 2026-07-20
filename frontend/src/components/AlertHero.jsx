@@ -48,14 +48,6 @@ export default function AlertHero({ event }) {
           <span className="hero-detail-label">Event ID</span>
           <span className="hero-detail-value mono">{ev.event_id || event.event_id}</span>
         </div>
-        <div className="hero-detail">
-          <span className="hero-detail-label">People at Risk</span>
-          <span className="hero-detail-value mono">
-            {event.risk?.estimated_people_at_risk != null
-              ? event.risk.estimated_people_at_risk.toLocaleString()
-              : 'N/A'}
-          </span>
-        </div>
         {event.research && (
           <>
             <div className="hero-detail">
